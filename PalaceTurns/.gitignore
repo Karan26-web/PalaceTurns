@@ -1,0 +1,11 @@
+.claude/
+node_modules/
+.DS_Store
+dist/
+.cache/
+.vite/
+
+.vercel
+
+# Local dev/debug scratch (puppeteer probes, screenshots, scratch output)
+_*
