@@ -47,7 +47,7 @@
   // scan can't reach (the intro genie, quiz choices, celebration + completion
   // art, and the legacy fs-*/mg-*/go-* screens). scan() looks each up by id and
   // instruments it ONLY while it is effectively visible on the current screen —
-  // so every asset in ASSETS/ that the game shows can be dragged, resized, and
+  // so every asset in assets/ that the game shows can be dragged, resized, and
   // exported, without cluttering the overlay with handles for hidden screens.
   // (Live gameplay assets — #juice, #tall-wrap, #wide-wrap, #guide-wrap,
   // #hand-hint — are already covered by the direct-child scan.)
@@ -79,9 +79,9 @@
   // new GIF / genie-2 assets can be shown statically, positioned, and exported
   // WITHOUT playing through the timed intro sequence.
   const INTRO_GENIE_ASSETS = [
-    { label: "S1 · welcome gif", src: "ASSETS/animate-genie.1.webp" },
-    { label: "S2 · fun gif",     src: "ASSETS/animate-genie.webp" },
-    { label: "S3-6 · genie-2",   src: "ASSETS/genie-2.webp" }
+    { label: "S1 · welcome gif", src: "assets/animate-genie.1.webp" },
+    { label: "S2 · fun gif",     src: "assets/animate-genie.webp" },
+    { label: "S3-6 · genie-2",   src: "assets/genie-2.webp" }
   ];
 
   const MIN_SIZE_PX = 10;   // resize floor

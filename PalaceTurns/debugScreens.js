@@ -45,11 +45,12 @@
                  go: function () { reset(); if (G.startCapacityFlow) G.startCapacityFlow({ assets: G.MAIN_GAME_ASSETS, phase: "main" }); else if (G.startMainGame) G.startMainGame(); } });
     steps.push({ label: "Select", title: "Select one container (chooser)", group: "more",
                  go: function () { reset(); if (G.showContainerSelect) G.showContainerSelect(); } });
-    var levels = G.LEVELS || {};
-    Object.keys(levels).forEach(function (id) {
-      steps.push({ label: "Lvl " + id, title: "Level " + id, group: "more",
-                   go: function () { reset(); if (G.startLevel) G.startLevel(id); } });
-    });
+    // NOTE: the old per-juice "Lvl watermelon/kiwi/pineapple" jumps drove the
+    // legacy mgStage engine (top%-anchored containers that float off the table).
+    // The live game runs entirely through the capacity engine (Tutorial → Select
+    // → watermelon), which is bottom-anchored on the table like the tutorial, so
+    // those debug jumps are intentionally NOT listed — they only led to the dead,
+    // mis-aligned parallel engine.
 
     var cur = -1;
 

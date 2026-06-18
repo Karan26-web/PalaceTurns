@@ -425,7 +425,7 @@
         }
 
         /* =========================================================
-           POUR OVERLAY — plays the animated ASSETS/juice-pour.svg
+           POUR OVERLAY — plays the animated assets/juice-pour.svg
            (lift + tilt + stream + splash) for the tutorial proof,
            replacing the old static SVG (#pour-scene). Reused element.
            ========================================================= */
@@ -809,11 +809,13 @@
         }
 
         /* MAIN-GAME container chooser — identical slot geometry to the quiz so
-           the two screens read the same (both use jar-selection.svg). */
+           the two screens read the same (both use jar-selection.svg). The art is
+           the game's own (watermelon) empty containers, so they're sized to fill
+           the wooden tiles nicely rather than reusing the generic-glass sizes. */
         #cs-choice-tall { left: 19.49%; top: 33.57%; }
         #cs-choice-wide { left: 52.2%;  top: 34.29%; }
-        #cs-choice-tall img { width: 34%; max-height: 78%; }
-        #cs-choice-wide img { width: 58%; max-height: 72%; }
+        #cs-choice-tall img { width: 52%; max-height: 76%; object-fit: contain; }
+        #cs-choice-wide img { width: 64%; max-height: 76%; object-fit: contain; }
 
         .quiz-choice.show {
             opacity: 1;
@@ -2356,21 +2358,21 @@
     </div>
 
     <div id="game-stage">
-        <img id="bg"       src="ASSETS/Background.webp"     alt="">
-        <img id="table"    src="ASSETS/TAble.webp"          alt="">
-        <img id="juice"    src="ASSETS/Orange Jar.svg"     alt="">
+        <img id="bg"       src="assets/Background.webp"     alt="">
+        <img id="table"    src="assets/TAble.webp"          alt="">
+        <img id="juice"    src="assets/Orange Jar.svg"     alt="">
         <div id="jar-stop-mask"></div>
 
         <!-- Containers keep their ORIGINAL absolute stage positions/sizes. -->
         <div id="tall-wrap">
             <div id="tall-liquid"></div>
             <div id="tall-drain-mask"></div>
-            <img id="tall" src="ASSETS/TAll container.svg" alt="">
+            <img id="tall" src="assets/TAll container.svg" alt="">
         </div>
 
         <div id="wide-wrap">
             <div id="wide-liquid"></div>
-            <img id="wide" src="ASSETS/Wide Container.svg" alt="">
+            <img id="wide" src="assets/Wide Container.svg" alt="">
         </div>
 
         <!-- Intro spotlight dim (Figma node 35:2454 — rgba(0,0,0,0.20), no blur).
@@ -2387,7 +2389,7 @@
         <img id="pour-scene" src="" alt="" aria-hidden="true">
 
         <!-- Tutorial "tap here" hand hint (appears after 4s idle). -->
-        <img id="hand-hint" src="ASSETS/image.webp" alt="">
+        <img id="hand-hint" src="assets/image.webp" alt="">
 
         <!-- Guide unit: Gogo + speech bubble move together so the bubble tail
              always points at Gogo's head and the text stays centred in the box. -->
@@ -2395,7 +2397,7 @@
              group, so the bubble tail stays connected to Gogo's head and the text
              stays centred inside the white box. -->
         <div id="guide-wrap">
-            <img id="genie" src="ASSETS/Gogo.webp" alt="">
+            <img id="genie" src="assets/Gogo.webp" alt="">
             <div id="speech-wrap">
                 <!-- CSS-drawn speech bubble (no SVG asset). The text lives INSIDE
                      it so the bubble sizes to its content (no negative area). -->
@@ -2424,13 +2426,13 @@
              → start-btn click → showPreLBDSequence).
              ========================================================= -->
         <div id="loading-screen" aria-hidden="false">
-            <img id="loading-banner" src="ASSETS/game-banner.webp" alt="Pour the Juice">
+            <img id="loading-banner" src="assets/game-banner.webp" alt="Pour the Juice">
             <div id="loading-status">
                 <div id="loading-track"><div id="loading-bar"></div></div>
                 <div id="loading-text">Loading…</div>
             </div>
             <button id="start-btn" type="button" aria-label="Start game">
-                <img src="ASSETS/start.webp" alt="Let's Go">
+                <img src="assets/start.webp" alt="Let's Go">
             </button>
         </div>
 
@@ -2439,14 +2441,14 @@
              ========================================================= -->
         <div id="quiz-overlay" class="quiz-overlay" aria-hidden="true">
             <div id="quiz-panel" class="quiz-panel">
-                <img class="quiz-panel-bg" src="ASSETS/jar-selection.svg" alt="">
+                <img class="quiz-panel-bg" src="assets/jar-selection.svg" alt="">
                 <div class="quiz-title">Tap the container that can hold more juice.</div>
 
                 <button id="quiz-choice-tall" class="quiz-choice" type="button" aria-label="Tall jar">
-                    <img src="ASSETS/TAll container.svg" alt="">
+                    <img src="assets/TAll container.svg" alt="">
                 </button>
                 <button id="quiz-choice-wide" class="quiz-choice" type="button" aria-label="Wide jar">
-                    <img src="ASSETS/Wide Container.svg" alt="">
+                    <img src="assets/Wide Container.svg" alt="">
                 </button>
             </div>
         </div>
@@ -2457,14 +2459,14 @@
              the pick decides which container the watermelon flow fills first. -->
         <div id="container-select" class="quiz-overlay" aria-hidden="true">
             <div id="cs-panel" class="quiz-panel">
-                <img class="quiz-panel-bg" src="ASSETS/jar-selection.svg" alt="">
+                <img class="quiz-panel-bg" src="assets/jar-selection.svg" alt="">
                 <div class="quiz-title">Select one container.</div>
 
                 <button id="cs-choice-tall" class="quiz-choice" type="button" aria-label="Tall glass">
-                    <img src="ASSETS/TAll container.svg" alt="">
+                    <img src="assets/TAll container.svg" alt="">
                 </button>
                 <button id="cs-choice-wide" class="quiz-choice" type="button" aria-label="Wide jar">
-                    <img src="ASSETS/Wide Container.svg" alt="">
+                    <img src="assets/Wide Container.svg" alt="">
                 </button>
             </div>
         </div>
@@ -2473,7 +2475,7 @@
              win Gogo (no speech bubble). Shown at the end of the wide-quiz
              success flow, before the main game starts. -->
         <div id="tutorial-celebrate" aria-hidden="true">
-            <img id="tutorial-celebrate-img" src="ASSETS/win gogo.webp" alt="Gogo">
+            <img id="tutorial-celebrate-img" src="assets/win gogo.webp" alt="Gogo">
         </div>
 
         <!-- =========================================================
@@ -2493,13 +2495,13 @@
             <!-- Large intro character for the six intro screens. src is swapped
                  per screen: animate-genie.1.gif (S1) → animate-genie.gif (S2) →
                  genie-2.png (S3-6). Sits above the blur, below the speech bubble. -->
-            <img id="pre-lbd-intro-genie" src="ASSETS/genie-1.webp" alt="" aria-hidden="true">
+            <img id="pre-lbd-intro-genie" src="assets/genie-1.webp" alt="" aria-hidden="true">
             <!-- Frozen-frame overlay: a snapshot of the GIF's current frame, shown
                  (and the GIF hidden) to VISUALLY pause the animation after a line
                  finishes typing — no PNG swap, no GIF-parser dependency. -->
             <canvas id="pre-lbd-intro-genie-freeze" aria-hidden="true"></canvas>
             <div id="pre-lbd-card">
-                <img id="pre-lbd-genie" src="ASSETS/genie.webp" alt="Genie">
+                <img id="pre-lbd-genie" src="assets/genie.webp" alt="Genie">
                 <div id="pre-lbd-title">Juice Challenge!</div>
             </div>
         </div>
@@ -2509,7 +2511,7 @@
              main-game iteration finishes. Reuses the celebration styling.
              ========================================================= -->
         <div id="capacity-complete" aria-hidden="true">
-            <img id="capacity-complete-gogo" src="ASSETS/win gogo.webp" alt="Gogo celebrating">
+            <img id="capacity-complete-gogo" src="assets/win gogo.webp" alt="Gogo celebrating">
             <div id="capacity-complete-stars">&#9733;&#9733;&#9733;</div>
             <div id="capacity-complete-text">You found which container<br>can hold more juice!</div>
             <button id="capacity-play-again" type="button">Play Again</button>
@@ -2520,8 +2522,8 @@
              Appears after the tutorial quiz is answered correctly.
              ========================================================= -->
         <div id="game-overlay" aria-hidden="true">
-            <img class="go-bg"    src="ASSETS/Background.webp" alt="">
-            <img class="go-table" src="ASSETS/TAble.webp"      alt="">
+            <img class="go-bg"    src="assets/Background.webp" alt="">
+            <img class="go-table" src="assets/TAble.webp"      alt="">
 
             <!-- Round progress + earned stars -->
             <div id="go-progress">
@@ -2535,7 +2537,7 @@
 
             <!-- Gogo guide + speech bar -->
             <div id="go-guide">
-                <img id="go-gogo" src="ASSETS/Gogo.webp" alt="Gogo">
+                <img id="go-gogo" src="assets/Gogo.webp" alt="Gogo">
                 <div id="go-speech"></div>
             </div>
 
@@ -2557,7 +2559,7 @@
             <!-- Final celebration -->
             <div id="go-complete">
                 <!-- TODO(asset): dedicated celebration art; reusing win gogo.png -->
-                <img id="go-complete-gogo" src="ASSETS/win gogo.webp" alt="Gogo celebrating">
+                <img id="go-complete-gogo" src="assets/win gogo.webp" alt="Gogo celebrating">
                 <div id="go-complete-stars">
                     <span class="go-star">&#9733;</span>
                     <span class="go-star">&#9733;</span>
@@ -2573,21 +2575,21 @@
              fills; the spill puddle is a CSS fallback (no Figma asset).
              ========================================================= -->
         <div id="figma-stage" aria-hidden="true">
-            <img class="fs-bg"    src="ASSETS/Background.webp" alt="">
-            <img class="fs-table" src="ASSETS/TAble.webp"      alt="">
-            <img id="fs-dispenser" src="ASSETS/Orange Jar.svg" alt="">
+            <img class="fs-bg"    src="assets/Background.webp" alt="">
+            <img class="fs-table" src="assets/TAble.webp"      alt="">
+            <img id="fs-dispenser" src="assets/Orange Jar.svg" alt="">
 
             <div id="fs-spill"></div>
 
             <div id="fs-tall-wrap">
                 <div class="fs-liquid" id="fs-tall-liquid"></div>
-                <img class="fs-container-img" id="fs-tall-img" src="ASSETS/TAll container.svg" alt="">
+                <img class="fs-container-img" id="fs-tall-img" src="assets/TAll container.svg" alt="">
                 <button class="fs-tap-target" type="button" data-target="tall" aria-label="Tall container"></button>
             </div>
 
             <div id="fs-wide-wrap">
                 <div class="fs-liquid" id="fs-wide-liquid"></div>
-                <img class="fs-container-img" id="fs-wide-img" src="ASSETS/Wide Container.svg" alt="">
+                <img class="fs-container-img" id="fs-wide-img" src="assets/Wide Container.svg" alt="">
                 <button class="fs-tap-target" type="button" data-target="wide" aria-label="Wide container"></button>
             </div>
 
@@ -2595,20 +2597,20 @@
             <img id="fs-pour" src="" alt="" aria-hidden="true">
 
             <!-- Character + speech bubble -->
-            <img id="fs-char"   src="ASSETS/Gogo.webp" alt="Gogo">
-            <img id="fs-bubble" src="ASSETS/Dialoage Box.svg" alt="">
+            <img id="fs-char"   src="assets/Gogo.webp" alt="Gogo">
+            <img id="fs-bubble" src="assets/Dialoage Box.svg" alt="">
             <div id="fs-bubble-text"></div>
 
             <!-- Capacity quiz -->
             <div id="fs-quiz">
                 <div id="fs-quiz-panel">
-                    <img class="fs-quiz-bg" src="ASSETS/jar-selection.svg" alt="">
+                    <img class="fs-quiz-bg" src="assets/jar-selection.svg" alt="">
                     <div id="fs-quiz-title">Tap the container that can hold more juice.</div>
                     <button id="fs-quiz-tall" class="fs-quiz-choice" type="button" data-target="tall" aria-label="Tall container">
-                        <img src="ASSETS/TAll container.svg" alt="">
+                        <img src="assets/TAll container.svg" alt="">
                     </button>
                     <button id="fs-quiz-wide" class="fs-quiz-choice" type="button" data-target="wide" aria-label="Wide container">
-                        <img src="ASSETS/Wide Container.svg" alt="">
+                        <img src="assets/Wide Container.svg" alt="">
                     </button>
                 </div>
             </div>
@@ -2618,7 +2620,7 @@
 
             <!-- Final completion celebration -->
             <div id="fs-complete">
-                <img src="ASSETS/win gogo.webp" alt="Gogo celebrating">
+                <img src="assets/win gogo.webp" alt="Gogo celebrating">
                 <div class="fs-complete-stars">&#9733;&#9733;&#9733;</div>
                 <div class="fs-complete-text"></div>
             </div>
@@ -2631,50 +2633,50 @@
              matches these two glasses). See the MAIN GAME module in JS.
              ========================================================= -->
         <div id="mg-stage" aria-hidden="true">
-            <img id="mg-bg"        src="ASSETS/Background.webp"      alt="">
-            <img id="mg-table"     src="ASSETS/TAble.webp"           alt="">
-            <img id="mg-dispenser" src="ASSETS/Watermelon Jar.svg"  alt="">
+            <img id="mg-bg"        src="assets/Background.webp"      alt="">
+            <img id="mg-table"     src="assets/TAble.webp"           alt="">
+            <img id="mg-dispenser" src="assets/Watermelon Jar.svg"  alt="">
 
             <!-- Big "holds more" container (left) -->
             <div id="mg-large" class="mg-wrap">
                 <div class="mg-liquid"></div>
-                <img src="ASSETS/for watermelone juice-1.svg" alt="">
+                <img src="assets/for watermelone juice-1.svg" alt="">
             </div>
             <!-- Smaller jar (right) -->
             <div id="mg-small" class="mg-wrap">
                 <div class="mg-liquid"></div>
-                <img src="ASSETS/for watermelone juice-1-1.svg" alt="">
+                <img src="assets/for watermelone juice-1-1.svg" alt="">
             </div>
 
             <!-- Gogo guide + speech bubble -->
             <div id="mg-guide">
-                <img id="mg-gogo" src="ASSETS/Gogo.webp" alt="Gogo">
+                <img id="mg-gogo" src="assets/Gogo.webp" alt="Gogo">
                 <div id="mg-speech"></div>
             </div>
 
             <!-- Quiz modal -->
             <div id="mg-quiz" aria-hidden="true">
                 <div id="mg-quiz-panel">
-                    <img id="mg-quiz-bg" src="ASSETS/jar-selection.svg" alt="">
+                    <img id="mg-quiz-bg" src="assets/jar-selection.svg" alt="">
                     <div id="mg-quiz-title">Select one container.</div>
                     <button id="mg-card-large" class="mg-card" type="button" data-id="large" aria-label="Larger container">
-                        <img src="ASSETS/for watermelone juice-1.svg" alt="">
+                        <img src="assets/for watermelone juice-1.svg" alt="">
                     </button>
                     <button id="mg-card-small" class="mg-card" type="button" data-id="small" aria-label="Smaller jar">
-                        <img src="ASSETS/for watermelone juice-1-1.svg" alt="">
+                        <img src="assets/for watermelone juice-1-1.svg" alt="">
                     </button>
                 </div>
             </div>
 
             <!-- Win / lose celebration -->
             <div id="mg-celebrate" aria-hidden="true">
-                <img id="mg-celebrate-img" src="ASSETS/win gogo.webp" alt="Gogo">
+                <img id="mg-celebrate-img" src="assets/win gogo.webp" alt="Gogo">
                 <div id="mg-celebrate-text"></div>
             </div>
 
             <!-- Final game completion (after the last level) -->
             <div id="mg-final" aria-hidden="true">
-                <img id="mg-final-gogo" src="ASSETS/win gogo.webp" alt="Gogo celebrating">
+                <img id="mg-final-gogo" src="assets/win gogo.webp" alt="Gogo celebrating">
                 <div id="mg-final-stars">&#9733;&#9733;&#9733;</div>
                 <div id="mg-final-text">Fantastic!<br>You learned which containers<br>can hold more juice!</div>
                 <button id="mg-play-again" type="button">Play Again</button>
@@ -2717,8 +2719,8 @@
         const preLbdBlackSheet = document.getElementById('pre-lbd-black-sheet');
         // NOTE: asset paths are `let` (not const) so the Capacity Flow engine can
         // swap them per iteration (tutorial vs main game) — see applyCapacityAssets.
-        let WIN_GOGO_SRC  = 'ASSETS/win gogo.webp';
-        let LOSE_GOGO_SRC = 'ASSETS/loose gogo.webp';
+        let WIN_GOGO_SRC  = 'assets/win gogo.webp';
+        let LOSE_GOGO_SRC = 'assets/loose gogo.webp';
 
         // Tutorial state machine
         const STEPS = {
@@ -3380,6 +3382,13 @@
 
         function openContainerSelect() {
             mainSelectedContainer = null;
+            // Show the SAME containers this game actually uses (the active empty
+            // art), not generic glasses — TALL_EMPTY_SRC / WIDE_EMPTY_SRC are set
+            // by applyCapacityAssets (watermelon for the main game).
+            const csTallImg = csTall.querySelector('img');
+            const csWideImg = csWide.querySelector('img');
+            if (csTallImg && TALL_EMPTY_SRC) csTallImg.src = TALL_EMPTY_SRC;
+            if (csWideImg && WIDE_EMPTY_SRC) csWideImg.src = WIDE_EMPTY_SRC;
             [csTall, csWide].forEach(el => el.classList.remove('show', 'floating', 'correct'));
             csPanel.classList.remove('show');
             csOverlay.setAttribute('aria-hidden', 'false');
@@ -3472,14 +3481,14 @@
 
             // Warm the key art so the first frames after Start are instant.
             const assets = [
-                'ASSETS/Background.webp', 'ASSETS/TAble.webp', 'ASSETS/Orange Jar.svg',
-                'ASSETS/TAll container.svg', 'ASSETS/Wide Container.svg',
-                'ASSETS/tall_container_orange_juice.svg', 'ASSETS/wide-fill-jar.svg',
-                'ASSETS/orange_jar_juice_decreasing.svg', 'ASSETS/juice-pour.svg',
-                'ASSETS/juice-pour-overflow.svg', 'ASSETS/genie-1.webp', 'ASSETS/genie-2.webp',
-                'ASSETS/genie.webp', 'ASSETS/Gogo.webp', 'ASSETS/Dialoage Box.svg', 'ASSETS/image.webp',
-                'ASSETS/overflow-splash.svg', 'ASSETS/overflow-puddle-1.svg',
-                'ASSETS/overflow-puddle-2.svg', 'ASSETS/overflow-puddle-3.svg'
+                'assets/Background.webp', 'assets/TAble.webp', 'assets/Orange Jar.svg',
+                'assets/TAll container.svg', 'assets/Wide Container.svg',
+                'assets/tall_container_orange_juice.svg', 'assets/wide-fill-jar.svg',
+                'assets/orange_jar_juice_decreasing.svg', 'assets/juice-pour.svg',
+                'assets/juice-pour-overflow.svg', 'assets/genie-1.webp', 'assets/genie-2.webp',
+                'assets/genie.webp', 'assets/Gogo.webp', 'assets/Dialoage Box.svg', 'assets/image.webp',
+                'assets/overflow-splash.svg', 'assets/overflow-puddle-1.svg',
+                'assets/overflow-puddle-2.svg', 'assets/overflow-puddle-3.svg'
             ];
             let loaded = 0;
             const bump = () => {
@@ -4269,24 +4278,24 @@
             // 1) Welcome — static genie-1, black sheet ON. genie-1's head sits lower
             //    in its box, so top 16.3% keeps it at the right height. The word pops
             //    3× in sync with the spoken "Welcome!"s (~0.20/1.14/2.12s).
-            { state: GAME_STATES.PRE_LBD_WELCOME, text: 'Welcome!', src: 'ASSETS/genie-1.webp',
+            { state: GAME_STATES.PRE_LBD_WELCOME, text: 'Welcome!', src: 'assets/genie-1.webp',
               position: 'center', blackSheet: true, top: '16.3%', scaleMul: 1.3, popSync: [200, 1140, 2120] },
             // 2) Juicy fun — same genie-1 placement/size, black sheet stays ON.
-            { state: GAME_STATES.PRE_LBD_INSTRUCTION, text: 'Let’s have some juicy fun!', src: 'ASSETS/genie-1.webp',
+            { state: GAME_STATES.PRE_LBD_INSTRUCTION, text: 'Let’s have some juicy fun!', src: 'assets/genie-1.webp',
               position: 'center', blackSheet: true, top: '16.3%', scaleMul: 1.3 },
             // 3) Here is some juice — genie-2 centred; dim the stage + spotlight the
             //    juice dispenser (Figma 35:2454). leadWait fades the welcome sheet out.
-            { state: GAME_STATES.PRE_LBD_INSTRUCTION, text: 'Here is some juice.', src: 'ASSETS/genie-2.webp',
+            { state: GAME_STATES.PRE_LBD_INSTRUCTION, text: 'Here is some juice.', src: 'assets/genie-2.webp',
               position: 'center', blackSheet: false, spotlight: 'juice', top: '10.26%', x: '53.08%', leadWait: 220 },
             // 4) Here are the containers — genie-2 on the RIGHT, spotlight containers.
-            { state: GAME_STATES.PRE_LBD_INSTRUCTION, text: 'And here are the containers.', src: 'ASSETS/genie-2.webp',
+            { state: GAME_STATES.PRE_LBD_INSTRUCTION, text: 'And here are the containers.', src: 'assets/genie-2.webp',
               position: 'right', blackSheet: false, spotlight: 'containers', top: '29.18%', x: '80.83%' },
             // 5) Let’s find out — genie-1 centred, normal size.
-            { state: GAME_STATES.PRE_LBD_INSTRUCTION, text: 'Let’s find out …', src: 'ASSETS/genie-1.webp',
+            { state: GAME_STATES.PRE_LBD_INSTRUCTION, text: 'Let’s find out …', src: 'assets/genie-1.webp',
               position: 'center', blackSheet: false, top: '17.9%', x: '50%' },
             // 6) …which holds more — genie-2 FLIPPED, left of the containers, pointing
             //    RIGHT at them; dim + spotlight the containers.
-            { state: GAME_STATES.PRE_LBD_INSTRUCTION, text: '… which container can hold more juice.', src: 'ASSETS/genie-2.webp',
+            { state: GAME_STATES.PRE_LBD_INSTRUCTION, text: '… which container can hold more juice.', src: 'assets/genie-2.webp',
               position: 'left', blackSheet: false, spotlight: 'containers', flip: true, top: '29.18%', x: '32%' }
         ];
 
@@ -4407,8 +4416,8 @@
 
         // SVG sources: the empty glass + the animated juice-fill variant.
         // (`let`, not const — the Capacity Flow engine swaps these per iteration.)
-        let EMPTY_GLASS_SRC = 'ASSETS/TAll container.svg';
-        let JUICE_FILL_SRC  = 'ASSETS/tall_container_orange_juice.svg';
+        let EMPTY_GLASS_SRC = 'assets/TAll container.svg';
+        let JUICE_FILL_SRC  = 'assets/tall_container_orange_juice.svg';
 
         // Tall container aliases (used by the pour-to-wide flow)
         let TALL_EMPTY_SRC = EMPTY_GLASS_SRC;
@@ -4416,18 +4425,18 @@
 
         // Wide container sources: empty + post-pour "half full" result.
         // (half-wide.svg replaces wide_container_orange_juice_fill_80_shape.svg.)
-        let WIDE_EMPTY_SRC = 'ASSETS/Wide Container.svg';
-        let WIDE_HALF_SRC  = 'ASSETS/half-wide.svg';
+        let WIDE_EMPTY_SRC = 'assets/Wide Container.svg';
+        let WIDE_HALF_SRC  = 'assets/half-wide.svg';
 
         // Tap-to-fill wide jar: animated SVG that fills the liquid from empty to
         // full with soda bubbles, then freezes full (the resting state). Same
         // 178×195 viewBox as the other wide art, so swaps never jump.
-        let WIDE_FILL_JAR_SRC = 'ASSETS/wide-fill-jar.svg';
+        let WIDE_FILL_JAR_SRC = 'assets/wide-fill-jar.svg';
         let WIDE_FILL_JAR_MS  = 2400;   // wide fill-SVG freeze time; per-asset (applyCapacityAssets)
 
-        // Animated pour scene (ASSETS/juice-pour.svg). Self-contained SMIL,
+        // Animated pour scene (assets/juice-pour.svg). Self-contained SMIL,
         // one full loop = 6.2s (matches the SVG's dur="6.2s").
-        let HTML_POUR_SRC = 'ASSETS/juice-pour.svg';
+        let HTML_POUR_SRC = 'assets/juice-pour.svg';
         const HTML_POUR_MS  = 6200;
 
         // Wide → tall overflow pour (level 2). The NEW combined-scene asset
@@ -4435,7 +4444,7 @@
         // pouring, the tall jar receiving the juice, the overflow, and the
         // spill/splash. It REPLACES the old mirrored juice-reverse-pour.svg —
         // that asset is no longer used for this level.
-        let WIDE_TO_TALL_OVERFLOW_POUR_SRC = 'ASSETS/juice-pour-overflow.svg';
+        let WIDE_TO_TALL_OVERFLOW_POUR_SRC = 'assets/juice-pour-overflow.svg';
 
         // The bundled scene runs one full cycle in 6.2s (the SVG's dur="6.2s").
         // Use THIS instead of the generic HTML_POUR_MS for the overflow pour so
@@ -4474,19 +4483,19 @@
         //   FULL   → static full jar (initial state)
         //   DRAIN  → animated draining jar (plays during fill)
         //   PAUSED → static jar frozen at the "half remaining" pose
-        let JAR_FULL_SRC   = 'ASSETS/Orange Jar.svg';
-        let JAR_DRAIN_SRC  = 'ASSETS/orange_jar_juice_decreasing.svg';
-        let JAR_PAUSED_SRC = 'ASSETS/orange_jar_paused_mid.svg';
+        let JAR_FULL_SRC   = 'assets/Orange Jar.svg';
+        let JAR_DRAIN_SRC  = 'assets/orange_jar_juice_decreasing.svg';
+        let JAR_PAUSED_SRC = 'assets/orange_jar_paused_mid.svg';
         // Level-2 ONLY: same paused pose but the juice level sits ~10% lower
         // INSIDE the SVG (natural drained look, no cream overlay), so level 2
         // reads as "more juice used" than level 1. See orange_jar_paused_low.svg.
-        let JAR_PAUSED_LOW_SRC = 'ASSETS/orange_jar_paused_low.svg';
+        let JAR_PAUSED_LOW_SRC = 'assets/orange_jar_paused_low.svg';
         // Level-2 (wide) drain: continues from the MID pose (JAR_PAUSED_SRC, juice
         // top y=258) and drops the vector juice further to the low level — so the
         // dispenser depletes progressively across levels (full → mid in L1, mid →
         // low in L2). Same clip-path vector decrease as JAR_DRAIN_SRC (no sheet),
         // just a different start/end range so there is no refill jump.
-        let JAR_WIDE_DRAIN_SRC = 'ASSETS/orange_jar_wide_drain.svg';
+        let JAR_WIDE_DRAIN_SRC = 'assets/orange_jar_wide_drain.svg';
 
         /* =========================================================
            CAPACITY FLOW ASSETS (swappable per iteration)
@@ -4506,8 +4515,8 @@
         // Tutorial defaults — captured from the live values above (single source
         // of truth; no duplicated literals).
         const TUTORIAL_ASSETS = {
-            bg: 'ASSETS/Background.webp',
-            table: 'ASSETS/TAble.webp',
+            bg: 'assets/Background.webp',
+            table: 'assets/TAble.webp',
             dispenserFull:   JAR_FULL_SRC,
             dispenserDrain:  JAR_DRAIN_SRC,
             dispenserPaused: JAR_PAUSED_SRC,
@@ -4517,10 +4526,10 @@
             containerBFilled: WIDE_HALF_SRC,
             pourAToB:        HTML_POUR_SRC,
             pourBToAOverflow: WIDE_TO_TALL_OVERFLOW_POUR_SRC,
-            gogo:    'ASSETS/Gogo.webp',
+            gogo:    'assets/Gogo.webp',
             winGogo:  WIN_GOGO_SRC,
             loseGogo: LOSE_GOGO_SRC,
-            handHint: 'ASSETS/image.webp',
+            handHint: 'assets/image.webp',
             // Optional extras (level-2 wide fill) — kept so the main game can
             // override them later too; default to the tutorial art.
             dispenserPausedLow: JAR_PAUSED_LOW_SRC,
@@ -4537,28 +4546,28 @@
         // currently point at the same orange-juice art, so the main game looks
         // like the tutorial until you swap them.)
         const MAIN_GAME_ASSETS = {
-            bg: 'ASSETS/Background.webp',
-            table: 'ASSETS/TAble.webp',
-            dispenserFull:   'ASSETS/Watermelon Jar.svg',
-            dispenserDrain:  'ASSETS/watermelon_jar_flow.svg',
+            bg: 'assets/Background.webp',
+            table: 'assets/TAble.webp',
+            dispenserFull:   'assets/Watermelon Jar.svg',
+            dispenserDrain:  'assets/watermelon_jar_flow.svg',
             // Reduced static pose so the dispenser STAYS drained after a fill
             // (was 'Watermelon Jar.svg' = full, which snapped the juice back up to
             // full and read as "the juice never stopped / never went down").
-            dispenserPaused: 'ASSETS/watermelon_jar_paused.svg',
-            containerAEmpty:  'ASSETS/for watermelone juice-1-1.svg',
-            containerAFilled: 'ASSETS/watermelon_juice_filling_animation_new_color_fixed.svg',
-            containerBEmpty:  'ASSETS/for watermelone juice-1.svg',
-            containerBFilled: 'ASSETS/watermelon-half-wide.svg',
-            pourAToB:         'ASSETS/juice-pour.svg',
-            pourBToAOverflow: 'ASSETS/juice-pour-overflow.svg',
-            gogo:    'ASSETS/Gogo.webp',
-            winGogo:  'ASSETS/win gogo.webp',
-            loseGogo: 'ASSETS/loose gogo.webp',
-            handHint: 'ASSETS/image.webp',
+            dispenserPaused: 'assets/watermelon_jar_paused.svg',
+            containerAEmpty:  'assets/for watermelone juice-1-1.svg',
+            containerAFilled: 'assets/watermelon_juice_filling_animation_new_color_fixed.svg',
+            containerBEmpty:  'assets/for watermelone juice-1.svg',
+            containerBFilled: 'assets/watermelon-half-wide.svg',
+            pourAToB:         'assets/juice-pour.svg',
+            pourBToAOverflow: 'assets/juice-pour-overflow.svg',
+            gogo:    'assets/Gogo.webp',
+            winGogo:  'assets/win gogo.webp',
+            loseGogo: 'assets/loose gogo.webp',
+            handHint: 'assets/image.webp',
             // Level-2 (wide) extras — watermelon equivalents.
-            dispenserPausedLow: 'ASSETS/watermelon_jar_paused.svg',
-            dispenserWideDrain: 'ASSETS/watermelon_jar_flow.svg',
-            containerBFillAnim: 'ASSETS/watermelon_juice_filling_animation_color_matched.svg',
+            dispenserPausedLow: 'assets/watermelon_jar_paused.svg',
+            dispenserWideDrain: 'assets/watermelon_jar_flow.svg',
+            containerBFillAnim: 'assets/watermelon_juice_filling_animation_color_matched.svg',
             // Watermelon fill SVGs freeze at ~2.8s (both), so the stream stops then.
             containerAFillMs: 2800,
             containerBFillMs: 2800
@@ -4864,7 +4873,7 @@
 
         /* =========================================================
            DISPENSER DRAIN (capacity-fill bug fix)
-           The dispenser plays the animated ASSETS/orange_jar_juice_decreasing.svg
+           The dispenser plays the animated assets/orange_jar_juice_decreasing.svg
            so the juice level visibly drops while a container fills. The fix for
            the original bug is in the *timing*: the drain SVG used to be frozen
            early (JAR_STOP_MS = 2100ms) while the fill + nozzle stream ran to
@@ -6103,7 +6112,7 @@
         }
 
         // ---------- Animated SVG pour (overlay) ----------
-        // Shows ASSETS/juice-pour.svg for one full SMIL cycle, then hides it.
+        // Shows assets/juice-pour.svg for one full SMIL cycle, then hides it.
         // The reused overlay <img> gets a cache-busted src on each play so the
         // SMIL timeline restarts cleanly from the beginning.
         // Show the pour SVG in the SAME shared #pour-area box as the two
@@ -6178,8 +6187,8 @@
             htmlPourImg.src = '';
             tallWrap.style.visibility = 'visible';
             wideWrap.style.visibility = 'visible';
-            tall.src = TALL_EMPTY_SRC;              // ASSETS/TAll container.svg
-            wide.src = WIDE_HALF_SRC + '?t=' + Date.now();   // ASSETS/half-wide.svg
+            tall.src = TALL_EMPTY_SRC;              // assets/TAll container.svg
+            wide.src = WIDE_HALF_SRC + '?t=' + Date.now();   // assets/half-wide.svg
         }
 
         // =====================================================================
@@ -6616,7 +6625,7 @@
             // (keeping the art's 342:189 aspect); positioned so its fan-out lobes
             // sit on the counter at the jar base and the run-off trails below.
             const splashW = r.width * 3.6, splashH = splashW * (189 / 342);
-            tallSpillEl = mkImg('ASSETS/overflow-splash.svg', 'ov-splash', {
+            tallSpillEl = mkImg('assets/overflow-splash.svg', 'ov-splash', {
                 left:  (jarCx - splashW / 2) + 'px',
                 top:   (r.bottom - sr.top - splashH * 0.30) + 'px',
                 width: splashW + 'px',
@@ -6627,9 +6636,9 @@
             // the jar centre, y on the lower step (~0.93 of the stage, per Figma).
             const lowY = sr.height * 0.93;
             [
-                { src: 'ASSETS/overflow-puddle-1.svg', w: 1.05, dx: -1.55, ar: 100 / 26 },
-                { src: 'ASSETS/overflow-puddle-2.svg', w: 0.57, dx: -0.20, ar: 54 / 14 },
-                { src: 'ASSETS/overflow-puddle-3.svg', w: 0.82, dx:  1.20, ar: 78 / 20 }
+                { src: 'assets/overflow-puddle-1.svg', w: 1.05, dx: -1.55, ar: 100 / 26 },
+                { src: 'assets/overflow-puddle-2.svg', w: 0.57, dx: -0.20, ar: 54 / 14 },
+                { src: 'assets/overflow-puddle-3.svg', w: 0.82, dx:  1.20, ar: 78 / 20 }
             ].forEach(p => {
                 const pw = r.width * p.w, ph = pw / p.ar;
                 mkImg(p.src, 'ov-tdrop', {
@@ -6792,7 +6801,7 @@
             return report;
         }
 
-        // Wide → tall OVERFLOW overlay. Plays ASSETS/juice-pour-overflow.svg
+        // Wide → tall OVERFLOW overlay. Plays assets/juice-pour-overflow.svg
         // (wide pouring · tall receiving · overflow · spill) over the real jar
         // area, then fades out and reveals the final proof state. Owns the whole
         // lifecycle — callers don't set tall/wide srcs themselves.
@@ -7523,7 +7532,7 @@
         // UNUSED (the popup + explanation live in runQuizResultFlow); kept only
         // as reference. Safe to delete.
         // Lose-Gogo overlay (same style/placement as the win-Gogo screen, but
-        // ASSETS/loose gogo.webp). Gentle — never harsh.
+        // assets/loose gogo.webp). Gentle — never harsh.
         function showLoseGogoFeedback() {
             return new Promise(resolve => {
                 tutorialCelebrateImg.src = LOSE_GOGO_SRC;
@@ -7613,8 +7622,8 @@
             //   dispenser USED (juice already dispensed) · tall EMPTY ·
             //   wide = half-wide.svg. The dispenser must NOT look refilled here.
             setDispenserUsed();                              // paused/used pose + clear drain mask
-            tall.src  = TALL_EMPTY_SRC;                       // ASSETS/TAll container.svg
-            wide.src  = WIDE_HALF_SRC + '?t=' + Date.now();   // ASSETS/half-wide.svg
+            tall.src  = TALL_EMPTY_SRC;                       // assets/TAll container.svg
+            wide.src  = WIDE_HALF_SRC + '?t=' + Date.now();   // assets/half-wide.svg
             document.body.classList.remove('scene-playing');  // make sure containers show
             if (tallDrainMask) tallDrainMask.classList.remove('active');
 
@@ -7789,7 +7798,7 @@
         (function preloadGameAssets() {
             // TODO(asset): no dedicated watermelon jar / glass SVGs exist in
             // ASSETS — glasses are CSS-drawn and the win art is reused.
-            ['ASSETS/win gogo.webp'].forEach(src => { const p = new Image(); p.src = src; });
+            ['assets/win gogo.webp'].forEach(src => { const p = new Image(); p.src = src; });
         })();
 
         // ---------- Reusable overlay-guide helpers ----------
@@ -7887,10 +7896,10 @@
             watermelon: {
                 id: 'watermelon',
                 juiceName: 'Watermelon',
-                dispenserFull: 'ASSETS/Watermelon Jar.svg',
-                dispenserFlow: 'ASSETS/watermelon_jar_flow.svg',
-                largeContainerAsset: 'ASSETS/for watermelone juice-1.svg',
-                smallContainerAsset: 'ASSETS/for watermelone juice-1-1.svg',
+                dispenserFull: 'assets/Watermelon Jar.svg',
+                dispenserFlow: 'assets/watermelon_jar_flow.svg',
+                largeContainerAsset: 'assets/for watermelone juice-1.svg',
+                smallContainerAsset: 'assets/for watermelone juice-1-1.svg',
                 liquidGradient: 'linear-gradient(to top, #b81616 0%, #e23226 45%, #ff6a4d 100%)',
                 streamGradient: 'linear-gradient(to bottom, rgba(255,180,160,0.92) 0%, #ff5a3a 38%, #e8312a 72%, #b81616 100%)',
                 bubbleGradient: 'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.95) 0%, rgba(255,170,150,0.55) 55%, rgba(255,80,50,0) 100%)',
@@ -7907,10 +7916,10 @@
             kiwi: {
                 id: 'kiwi',
                 juiceName: 'Kiwi',
-                dispenserFull: 'ASSETS/Kiwi Jar.svg',
-                dispenserFlow: 'ASSETS/kiwi_jar_static_flow.svg',
-                largeContainerAsset: 'ASSETS/for kiwi juice-1.svg',
-                smallContainerAsset: 'ASSETS/for kiwi juice-1-1.svg',
+                dispenserFull: 'assets/Kiwi Jar.svg',
+                dispenserFlow: 'assets/kiwi_jar_static_flow.svg',
+                largeContainerAsset: 'assets/for kiwi juice-1.svg',
+                smallContainerAsset: 'assets/for kiwi juice-1-1.svg',
                 liquidGradient: 'linear-gradient(to top, #4e9a06 0%, #7cb342 45%, #c0e57a 100%)',
                 streamGradient: 'linear-gradient(to bottom, rgba(220,240,170,0.92) 0%, #9ccc4f 38%, #6aa531 72%, #4e7d12 100%)',
                 bubbleGradient: 'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.95) 0%, rgba(200,230,150,0.55) 55%, rgba(120,180,60,0) 100%)',
@@ -7929,10 +7938,10 @@
                 id: 'pineapple',
                 juiceName: 'Pineapple',
                 // NOTE: actual asset is "Pineapple jar.svg" (no "(1)").
-                dispenserFull: 'ASSETS/Pineapple jar.svg',
-                dispenserFlow: 'ASSETS/pineapple_jar_flow.svg',
-                largeContainerAsset: 'ASSETS/for pinapple juice-1.svg',
-                smallContainerAsset: 'ASSETS/for pinapple juice-1-1.svg',
+                dispenserFull: 'assets/Pineapple jar.svg',
+                dispenserFlow: 'assets/pineapple_jar_flow.svg',
+                largeContainerAsset: 'assets/for pinapple juice-1.svg',
+                smallContainerAsset: 'assets/for pinapple juice-1-1.svg',
                 // Minimal color schema (array + hexes) — applyLevelTheme derives
                 // the stream/bubble/drop/sparkle gradients from these.
                 liquidGradient: ['#FFB300', '#FFC107', '#FFD84A'],   // dark→light (bottom→top)
@@ -8517,20 +8526,20 @@
         // animated fill; levels without an entry use the CSS liquid fill.
         const SVG_FILL = {
             kiwi: {
-                fillSrc: 'ASSETS/kiwi_juice_filling_animation_new_glass.svg',
-                fullSrc: 'ASSETS/kiwi_juice_filling_animation_tip_full.svg',
+                fillSrc: 'assets/kiwi_juice_filling_animation_new_glass.svg',
+                fullSrc: 'assets/kiwi_juice_filling_animation_tip_full.svg',
                 durationMs: 2600,    // matches new_glass.svg CSS fill (2.6s)
                 glow: 'drop-shadow(0 0 14px rgba(150,210,70,0.95)) drop-shadow(0 0 26px rgba(120,180,60,0.6))'
             },
             watermelon: {
-                fillSrc: 'ASSETS/watermelon_juice_filling_animation_color_matched.svg',
-                fullSrc: 'ASSETS/watermelon_juice_filling_animation_new_color_fixed.svg',
+                fillSrc: 'assets/watermelon_juice_filling_animation_color_matched.svg',
+                fullSrc: 'assets/watermelon_juice_filling_animation_new_color_fixed.svg',
                 durationMs: 2800,    // matches color_matched.svg SMIL fill (2.8s)
                 glow: 'drop-shadow(0 0 14px rgba(255,90,60,0.95)) drop-shadow(0 0 26px rgba(210,30,20,0.6))'
             },
             pineapple: {
-                fillSrc: 'ASSETS/pineapple_juice_filling_animation_for_this_full.svg',
-                fullSrc: 'ASSETS/pineapple_juice_filling_animation_issue_fixed_full.svg',
+                fillSrc: 'assets/pineapple_juice_filling_animation_for_this_full.svg',
+                fullSrc: 'assets/pineapple_juice_filling_animation_issue_fixed_full.svg',
                 durationMs: 2800,    // matches for_this_full.svg SMIL fill (2.8s)
                 glow: 'drop-shadow(0 0 14px rgba(255,216,74,0.98)) drop-shadow(0 0 26px rgba(255,179,0,0.65))'
             }
