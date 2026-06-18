@@ -16,13 +16,15 @@
 <path opacity="0.5" fill-rule="evenodd" clip-rule="evenodd" d="M13.6026 0.585938L13.4684 3.21127C13.4684 3.21127 8.02152 4.64262 6.40838 5.29915C4.79525 5.95568 0.558914 7.98402 0.021203 12.6377C-0.417619 16.4319 6.07377 70.3698 8.48508 90.1503C9.3901 97.5773 9.70705 101.426 18.781 105.171C28.4342 109.155 54.8642 109.155 64.5166 105.171C73.7239 101.372 73.9243 97.4387 74.8426 89.9035C77.2768 69.924 83.7126 16.4162 83.2755 12.6377C82.7378 7.98402 78.5015 5.95568 76.8883 5.29915C75.2743 4.64341 71.2737 3.21127 71.2737 3.21127L71.1395 0.585938C48.5547 0.585938 36.1874 0.585938 13.6026 0.585938Z" fill="#CBCBCB"/>
 <path opacity="0.5" fill-rule="evenodd" clip-rule="evenodd" d="M13.6026 0.585938L13.4684 3.21127C13.4684 3.21127 8.02152 4.64262 6.40838 5.29915C4.79525 5.95568 0.558914 7.98402 0.021203 12.6377C-0.417619 16.4319 6.07377 70.3698 8.48508 90.1503C9.3901 97.5773 9.70705 101.426 18.781 105.171C28.4342 109.155 54.8642 109.155 64.5166 105.171C73.7239 101.372 73.9243 97.4387 74.8426 89.9035C77.2768 69.924 83.7126 16.4162 83.2755 12.6377C82.7378 7.98402 78.5015 5.95568 76.8883 5.29915C75.2743 4.64341 71.2737 3.21127 71.2737 3.21127L71.1395 0.585938H65.0922C65.0922 0.585938 64.9934 2.2108 66.5888 4.21956C68.1852 6.22832 78.3664 7.90567 78.3664 12.615C78.3664 17.3243 71.7479 87.7239 69.8654 93.5708C64.5784 109.991 19.5139 109.991 14.2268 93.5708C12.3444 87.7239 5.72589 17.325 5.72589 12.615C5.72589 7.90489 15.908 6.22753 17.5034 4.21956C19.0989 2.2108 19 0.585938 19 0.585938H13.6026Z" fill="#B2B1B2"/>
 
-<!-- Static FULL state: shown AFTER the for_this_full fill animation completes,
-     so the liquid starts full; the optional top-off animation only runs if
-     triggered (begin="indefinite"). -->
+<!-- Tall-container fill: animates EMPTY -> FULL on load (begin="0s") over 2.8s,
+     then freezes full (fill="freeze"). Mirrors the watermelon tall fill so the
+     juice visibly rises while the dispenser drains, instead of appearing
+     pre-filled. The rect's default attrs (y=-24, height=160) are the FULL state,
+     so a no-cache-bust re-assign (static pre-fill spots) still shows it full. -->
 <g id="pineapple-juice-fill-full-proper" clip-path="url(#pineappleGlassInteriorFullClip)">
   <rect x="-2" y="-24" width="88" height="160" fill="url(#pineappleJarJuiceGradient)" opacity="1">
-    <animate attributeName="y" from="116" to="-24" dur="2.8s" begin="indefinite" fill="freeze"/>
-    <animate attributeName="height" from="0" to="160" dur="2.8s" begin="indefinite" fill="freeze"/>
+    <animate attributeName="y" from="116" to="-24" dur="2.8s" begin="0s" fill="freeze"/>
+    <animate attributeName="height" from="0" to="160" dur="2.8s" begin="0s" fill="freeze"/>
   </rect>
 </g>
 <path fill-rule="evenodd" clip-rule="evenodd" d="M13.6016 0.46875C13.6016 0.46875 16.0915 2.17353 17.671 2.2033C19.2515 2.23307 47.3556 2.2033 47.3556 2.2033C47.3556 2.2033 68.4349 2.35216 69.611 1.69641C70.7879 1.03988 71.1376 0.46875 71.1376 0.46875H13.6016Z" fill="#B8B7B8"/>

@@ -7,8 +7,7 @@
     <path d="M239 132.297C239 121.02 249.254 112.378 260.428 113.894C287.588 117.576 338.989 123.021 405.5 123.021C481.559 120.921 526.124 116.903 549.704 114.003C561.176 112.592 572 121.608 572 133.167V432.723C572 436.465 569.45 439.686 565.779 440.412C546.318 444.263 483.171 455.414 404.515 455.414C314.093 455.414 261.367 444.667 244.752 440.631C241.321 439.797 239 436.706 239 433.174L239 132.297Z" fill="url(#paint1_linear_541_230)"/>
     <path d="M244 157.316C244 157.316 341.949 177.316 405.5 177.316C469.051 177.316 567 157.316 567 157.316V461.316H244V157.316Z" fill="url(#pattern1_541_230)" fill-opacity="0.35"/>
   </g>
-  <g id="pineapple_juice_TOP_surface_synced">
-    <animateTransform attributeName="transform" type="translate" values="0 0;0 102" dur="4.2s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.42 0 0.58 1"/>
+  <g id="pineapple_juice_TOP_surface_synced" transform="translate(0 102)">
     <g filter="url(#filter0_f_541_230)">
       <path d="M567 158.938C567 161.112 494.694 172 405.5 172C316.306 172 244 161.112 244 158.938C244 156.763 316.306 149 405.5 149C494.694 149 567 156.763 567 158.938Z" fill="#FFD51A"/>
       <path d="M567 158.938C567 161.112 494.694 172 405.5 172C316.306 172 244 161.112 244 158.938C244 156.763 316.306 149 405.5 149C494.694 149 567 156.763 567 158.938Z" fill="url(#pattern3_541_230)" fill-opacity="0.6"/>
@@ -59,10 +58,7 @@
 </clipPath>
 <mask id="pineapple_juice_level_mask_game" maskUnits="userSpaceOnUse" x="239" y="113" width="333" height="346">
   <rect x="239" y="113" width="333" height="346" fill="black"/>
-  <rect id="pineapple_juice_reveal_game" x="239" y="157" width="333" height="302" fill="white">
-    <animate attributeName="y" values="157;259" dur="4.2s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.42 0 0.58 1"/>
-    <animate attributeName="height" values="302;200" dur="4.2s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.42 0 0.58 1"/>
-  </rect>
+  <rect id="pineapple_juice_reveal_game" x="239" y="259" width="333" height="200" fill="white"/>
 </mask>
 
 <pattern id="pattern0_541_230" patternContentUnits="objectBoundingBox" width="1" height="1">

@@ -46,8 +46,71 @@
             --tutorial-stream-color: #F54803;
             --tutorial-spill-color:  #E73202;
         }
+        /* The watermelon containers use their OWN art proportions (short tumbler
+           84×109, round jar 98×101) instead of the tutorial's tall-cylinder /
+           wide-jar boxes — so they render at the correct shape AND, being shorter,
+           fill cleanly under the tap (the tall cylinder was so tall its body
+           dropped below the table). Bottom-anchored so they rest on the table at
+           any height. The tutorial (no phase-watermelon class) is untouched. */
+        body.phase-watermelon #tall { aspect-ratio: 84 / 109; }
+        body.phase-watermelon #wide { aspect-ratio: 98 / 101; }
+        /* Drop the (now shorter) watermelon containers so their bases rest on the
+           SAME table line as the tutorial. These are the CSS fallbacks; the exact
+           per-asset left/top/width come from MAIN_GAME_LAYOUT (Layout Debug export)
+           and are applied as inline styles in the main phase. */
+        body.phase-watermelon #tall-wrap { top: 52.23%; }
+        body.phase-watermelon #wide-wrap { top: 52.40%; }
         body.phase-watermelon #html-pour-img {
             filter: hue-rotate(-22deg) saturate(1.35) brightness(0.97);
+        }
+
+        /* =========================================================
+           PINEAPPLE round (2nd fruit). Runs on the SAME engine as the
+           watermelon round (body keeps .phase-watermelon for the shared
+           grounding/tap/layout logic); .fruit-pineapple only re-skins:
+           golden-yellow juice FX, the pineapple container proportions
+           (tall 84×109, wide 66×96), and a small warm pour hue-shift.
+           Placed AFTER the phase-watermelon rules so equal-specificity
+           overrides win. ========================================================= */
+        body.fruit-pineapple {
+            --tutorial-juice-light: #FFD21A;
+            --tutorial-juice-mid:   #FFC400;
+            --tutorial-juice-dark:  #E8A200;
+            --tutorial-stream-color: #FFC400;
+            --tutorial-spill-color:  #F0B000;
+            --fx-ring-color: rgba(255, 196, 0, .92);
+        }
+        body.fruit-pineapple #tall { aspect-ratio: 84 / 109; }
+        body.fruit-pineapple #wide { aspect-ratio: 66 / 96; }
+        body.fruit-pineapple #html-pour-img {
+            filter: hue-rotate(12deg) saturate(1.15) brightness(1.08);
+        }
+        body.fruit-pineapple .ov-splash,
+        body.fruit-pineapple .ov-tdrop {
+            filter: hue-rotate(12deg) saturate(1.2) brightness(1.06) drop-shadow(0 1px 4px rgba(190, 140, 0, 0.3));
+        }
+
+        /* =========================================================
+           KIWI round (3rd fruit). Same engine; .fruit-kiwi re-skins to
+           green juice FX, the kiwi container proportions (tall 104×114,
+           wide 91×110) and an orange→green pour hue-shift.
+           ========================================================= */
+        body.fruit-kiwi {
+            --tutorial-juice-light: #A9DF2D;
+            --tutorial-juice-mid:   #8BCB12;
+            --tutorial-juice-dark:  #6A9B0E;
+            --tutorial-stream-color: #8BCB12;
+            --tutorial-spill-color:  #79B30E;
+            --fx-ring-color: rgba(140, 203, 18, .92);
+        }
+        body.fruit-kiwi #tall { aspect-ratio: 104 / 114; }
+        body.fruit-kiwi #wide { aspect-ratio: 91 / 110; }
+        body.fruit-kiwi #html-pour-img {
+            filter: hue-rotate(65deg) saturate(1.25) brightness(1.0);
+        }
+        body.fruit-kiwi .ov-splash,
+        body.fruit-kiwi .ov-tdrop {
+            filter: hue-rotate(65deg) saturate(1.3) brightness(0.98) drop-shadow(0 1px 4px rgba(60, 120, 0, 0.3));
         }
 
         * {
@@ -807,6 +870,17 @@
             width: 58%;
             max-height: 72%;
         }
+        /* In a fruit round the quiz shows that round's OWN containers (set in
+           showCapacityQuiz). Their art is bottom-heavy and varies in shape per
+           fruit, so size them like the chooser tiles (object-fit:contain, bottom-
+           anchored) instead of the generic-glass sizing above. The tutorial (no
+           .phase-watermelon) keeps the generic sizing. */
+        body.phase-watermelon #quiz-choice-tall img {
+            width: 52%; max-height: 76%; object-fit: contain; object-position: center bottom;
+        }
+        body.phase-watermelon #quiz-choice-wide img {
+            width: 64%; max-height: 76%; object-fit: contain; object-position: center bottom;
+        }
 
         /* MAIN-GAME container chooser — identical slot geometry to the quiz so
            the two screens read the same (both use jar-selection.svg). The art is
@@ -1146,8 +1220,14 @@
         }
         #tutorial-celebrate.show { display: flex; animation: panelPop 500ms ease; }
         #tutorial-celebrate img {
-            width: 34%;
-            height: auto;
+            /* successGogo.gif (312×550) and the lose gogo (528×706) are PORTRAIT.
+               Sizing by WIDTH (old 34%) made the gif ~60 stage-units tall on a
+               56.25-tall stage — taller than the screen, so it read as a zoomed-in,
+               full-bleed crop. Size by HEIGHT so it always fits and sits as a
+               centred celebration character. */
+            height: 56%;
+            width: auto;
+            max-width: 46%;
             user-select: none;
             -webkit-user-drag: none;
         }
@@ -1676,8 +1756,8 @@
            interaction). */
         #start-btn {
             position: absolute;
-            right: 4%;
-            bottom: 1%;
+            right: 25%;
+            bottom: 8%;
             width: clamp(140px, 19vw, 550px);
             height: auto;
             padding: 0;
@@ -2432,7 +2512,7 @@
                 <div id="loading-text">Loading…</div>
             </div>
             <button id="start-btn" type="button" aria-label="Start game">
-                <img src="assets/start.webp" alt="Let's Go">
+                <img src="assets/start.svg" alt="Play">
             </button>
         </div>
 
@@ -2475,7 +2555,7 @@
              win Gogo (no speech bubble). Shown at the end of the wide-quiz
              success flow, before the main game starts. -->
         <div id="tutorial-celebrate" aria-hidden="true">
-            <img id="tutorial-celebrate-img" src="assets/win gogo.webp" alt="Gogo">
+            <img id="tutorial-celebrate-img" src="assets/successGogo.gif" alt="Gogo">
         </div>
 
         <!-- =========================================================
@@ -2511,7 +2591,7 @@
              main-game iteration finishes. Reuses the celebration styling.
              ========================================================= -->
         <div id="capacity-complete" aria-hidden="true">
-            <img id="capacity-complete-gogo" src="assets/win gogo.webp" alt="Gogo celebrating">
+            <img id="capacity-complete-gogo" src="assets/successGogo.gif" alt="Gogo celebrating">
             <div id="capacity-complete-stars">&#9733;&#9733;&#9733;</div>
             <div id="capacity-complete-text">You found which container<br>can hold more juice!</div>
             <button id="capacity-play-again" type="button">Play Again</button>
@@ -2559,7 +2639,7 @@
             <!-- Final celebration -->
             <div id="go-complete">
                 <!-- TODO(asset): dedicated celebration art; reusing win gogo.png -->
-                <img id="go-complete-gogo" src="assets/win gogo.webp" alt="Gogo celebrating">
+                <img id="go-complete-gogo" src="assets/successGogo.gif" alt="Gogo celebrating">
                 <div id="go-complete-stars">
                     <span class="go-star">&#9733;</span>
                     <span class="go-star">&#9733;</span>
@@ -2620,7 +2700,7 @@
 
             <!-- Final completion celebration -->
             <div id="fs-complete">
-                <img src="assets/win gogo.webp" alt="Gogo celebrating">
+                <img src="assets/successGogo.gif" alt="Gogo celebrating">
                 <div class="fs-complete-stars">&#9733;&#9733;&#9733;</div>
                 <div class="fs-complete-text"></div>
             </div>
@@ -2670,13 +2750,13 @@
 
             <!-- Win / lose celebration -->
             <div id="mg-celebrate" aria-hidden="true">
-                <img id="mg-celebrate-img" src="assets/win gogo.webp" alt="Gogo">
+                <img id="mg-celebrate-img" src="assets/successGogo.gif" alt="Gogo">
                 <div id="mg-celebrate-text"></div>
             </div>
 
             <!-- Final game completion (after the last level) -->
             <div id="mg-final" aria-hidden="true">
-                <img id="mg-final-gogo" src="assets/win gogo.webp" alt="Gogo celebrating">
+                <img id="mg-final-gogo" src="assets/successGogo.gif" alt="Gogo celebrating">
                 <div id="mg-final-stars">&#9733;&#9733;&#9733;</div>
                 <div id="mg-final-text">Fantastic!<br>You learned which containers<br>can hold more juice!</div>
                 <button id="mg-play-again" type="button">Play Again</button>
@@ -2719,7 +2799,7 @@
         const preLbdBlackSheet = document.getElementById('pre-lbd-black-sheet');
         // NOTE: asset paths are `let` (not const) so the Capacity Flow engine can
         // swap them per iteration (tutorial vs main game) — see applyCapacityAssets.
-        let WIN_GOGO_SRC  = 'assets/win gogo.webp';
+        let WIN_GOGO_SRC  = 'assets/successGogo.gif';
         let LOSE_GOGO_SRC = 'assets/loose gogo.webp';
 
         // Tutorial state machine
@@ -2816,7 +2896,7 @@
             const easeInOutCubic = (x) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
             const easeOutQuad = (x) => 1 - (1 - x) * (1 - x);
             const smooth = (x) => { x = clamp01(x); return x * x * (3 - 2 * x); };
-            const DENSITY = { sparse: 1100, regular: 2000, dense: 3300 };
+            const DENSITY = { sparse: 800, regular: 1400, dense: 2200 };
 
             function mulberry32(a) {
                 return function () {
@@ -3038,10 +3118,20 @@
                         width: '100%', height: '100%', pointerEvents: 'none', zIndex: String(this.zIndex),
                     });
                     (host || document.body).appendChild(c);
-                    const dpr = Math.min(2, window.devicePixelRatio || 1);
+                    // Cap BOTH the DPR and the absolute backing-store width: on
+                    // large/retina screens a full-res canvas is millions of pixels
+                    // to fill (radial gradients + composites) every frame — that is
+                    // what made the wipe lag. The canvas is stretched to 100% via
+                    // CSS, so a smaller buffer just reads slightly softer, which is
+                    // imperceptible on a 2.6s transient wipe.
+                    const dpr = Math.min(1.5, window.devicePixelRatio || 1);
                     const rect = host ? host.getBoundingClientRect() : { width: innerWidth, height: innerHeight };
-                    c.width = Math.round(rect.width * dpr);
-                    c.height = Math.round(rect.height * dpr);
+                    let cw = Math.max(1, Math.round(rect.width * dpr));
+                    let ch = Math.max(1, Math.round(rect.height * dpr));
+                    const MAX_W = 1600;                       // backing-store width budget
+                    if (cw > MAX_W) { ch = Math.round(ch * (MAX_W / cw)); cw = MAX_W; }
+                    c.width = cw;
+                    c.height = ch;
                     return c;
                 }
 
@@ -3229,16 +3319,30 @@
             gameState.busy = false;
 
             if (CAPACITY_PHASE === 'main') {
-                console.log('[juiceGame] main-game iteration complete → completion screen');
+                // A fruit round just finished. Advance to the NEXT fruit round
+                // (watermelon → pineapple → kiwi) with the same golden-portal →
+                // paint-scene → container-chooser hand-off the tutorial uses.
+                // After the LAST round, show the completion screen.
+                if (currentFruitRound < FRUIT_ROUNDS.length - 1) {
+                    currentFruitRound++;
+                    const next = FRUIT_ROUNDS[currentFruitRound];
+                    console.log('[juiceGame] fruit round complete → next round: ' + next.id +
+                                ' (golden portal → chooser)');
+                    await playGoldenSandWhirlpoolTransition(async () => { paintFruitScene(next); });
+                    openContainerSelect();
+                    return;
+                }
+                console.log('[juiceGame] last fruit round complete → completion screen');
                 showCapacityComplete();
                 return;
             }
-            // The orange tutorial hands off to the WATERMELON main game, but
-            // first the child picks which container to use ("Select one
-            // container."). We paint the watermelon scene at the portal peak
-            // (invisible swap), then open the chooser once the portal reveals.
+            // The orange tutorial hands off to the FIRST fruit round (watermelon),
+            // but first the child picks which container to use ("Select one
+            // container."). We paint that scene at the portal peak (invisible swap),
+            // then open the chooser once the portal reveals.
+            currentFruitRound = 0;
             console.log('[juiceGame] tutorial complete → container chooser (golden portal)');
-            await playGoldenSandWhirlpoolTransition(async () => { paintWatermelonScene(); });
+            await playGoldenSandWhirlpoolTransition(async () => { paintFruitScene(FRUIT_ROUNDS[0]); });
             openContainerSelect();
         }
 
@@ -3293,8 +3397,16 @@
         function startCapacityFlow(config) {
             config = config || {};
             CAPACITY_PHASE = config.phase || 'tutorial';
-            // Watermelon theme drives the post-tutorial (main) iteration.
+            // Watermelon theme drives the post-tutorial (main) iterations.
             document.body.classList.toggle('phase-watermelon', CAPACITY_PHASE === 'main');
+            // The tutorial (orange) clears any leftover fruit-round skin from a
+            // previous play-through and rewinds to the first fruit round so a fresh
+            // run always starts watermelon → pineapple → kiwi. (The fruit modifier
+            // for a main round is set by paintFruitScene / startMainGameIteration.)
+            if (CAPACITY_PHASE !== 'main') {
+                document.body.classList.remove('fruit-pineapple', 'fruit-kiwi');
+                currentFruitRound = 0;
+            }
             // Single master reset: clears timers/streams/particles, hard-resets
             // both container wrappers to home (position lock), zeroes volume/
             // overflow/tap, sets the dispenser back to FULL (a fresh iteration),
@@ -3310,6 +3422,11 @@
             wide.src = WIDE_EMPTY_SRC;
             if (wideLiquid) wideLiquid.classList.remove('partial');
             resetGeniePose();
+
+            // Main game uses the resized watermelon container layout; the tutorial
+            // reverts to the default CSS so it is unchanged.
+            if (CAPACITY_PHASE === 'main') applyMainGameLayout();
+            else clearMainGameLayout();
 
             gameState.busy = false;
             gameState.canInteract = false;
@@ -3343,8 +3460,10 @@
         // `startWith` ('tall' | 'wide') comes from the container chooser; it
         // decides which container is filled first.
         function startMainGameIteration() {
+            const round = FRUIT_ROUNDS[currentFruitRound] || FRUIT_ROUNDS[0];
+            applyFruitBodyClasses(round);          // keep the fruit skin through the reset
             startCapacityFlow({
-                assets: MAIN_GAME_ASSETS, phase: 'main',
+                assets: round.assets, phase: 'main',
                 startWith: mainSelectedContainer || 'tall'
             });
         }
@@ -3356,29 +3475,112 @@
         //  compare capacity. Reuses the quiz panel art + animation classes.
         // =========================================================
         let mainSelectedContainer = null;          // 'tall' | 'wide'
+
+        // WATERMELON main-game layout overrides (percent, relative to #game-stage).
+        // Exported from the Layout Debug overlay (?debug=1) for the watermelon flow:
+        // the dispenser jar (#juice) is dropped slightly, the tall container is
+        // resized larger (5.4% → 7.35% wide) and re-seated, and the wide container
+        // is pinned to its measured spot. Applied as inline styles in the main
+        // phase only (applyMainGameLayout) and cleared for the tutorial
+        // (clearMainGameLayout), so the tutorial layout is untouched.
+        // NOTE: the fill-glide + tap geometry are tuned for the default container
+        // size/position — re-test the fill/pour after changing these.
+        const MAIN_GAME_LAYOUT = [
+            { id: 'juice',     x: 18.18, y: 18.34, w: 30   },
+            { id: 'tall-wrap', x: 53.7,  y: 52.23, w: 7.35 },
+            { id: 'wide-wrap', x: 66.3,  y: 52.4,  w: 8.7  },
+        ];
+        // Per-fruit container layouts. The dispenser + the wrap TOPS (table line)
+        // and LEFTS are identical across fruits — only the wrap WIDTHS change so
+        // that each fruit's differently-proportioned container art renders at the
+        // SAME on-screen HEIGHT and therefore seats its base on the SAME table line
+        // (the wrappers are bottom-anchored via #tall/#wide object-position). Widths
+        // are derived from each art's viewBox so the shape stays true:
+        //   width% = watermelonHeight% / ((16/9) · viewH/viewW)
+        // (pineapple tall shares the watermelon 84×109 box, so it is unchanged.)
+        const FRUIT_LAYOUTS = {
+            watermelon: MAIN_GAME_LAYOUT,
+            pineapple: [
+                // y nudged down from 18.34 so the jar's stand rests ON the table line
+                // (it was floating above). Matched to the kiwi dispenser's table line
+                // (same table, ~identical base geometry). The tap point + pour stream
+                // are fractions of this box, so they move down with it and stay aligned.
+                { id: 'juice',     x: 18.18, y: 21.9,  w: 30    },
+                { id: 'tall-wrap', x: 53.7,  y: 52.23, w: 7.35  },   // 84×109 (same as watermelon)
+                { id: 'wide-wrap', x: 66.3,  y: 52.4,  w: 6.16  },   // 66×96 bottle
+            ],
+            kiwi: [
+                // Kiwi Jar.svg is PORTRAIT (508×573) — at w:30 it rendered ~23% taller
+                // than the watermelon/pineapple jars, so its base sank below the table.
+                // Narrow it so its on-screen HEIGHT matches the pineapple jar (base back
+                // on the table line) and re-centre (center stays at 33.18%) so it reads
+                // like the other flows' dispenser sitting on the counter.
+                { id: 'juice',     x: 21.43, y: 21.9,  w: 23.5  },   // y dropped so the stand rests ON the table line (matched to the target jars); was floating above
+                { id: 'tall-wrap', x: 53.7,  y: 52.23, w: 8.70  },   // 104×114
+                { id: 'wide-wrap', x: 66.3,  y: 52.4,  w: 7.42  },   // 91×110
+            ],
+        };
+        function activeFruitLayout() {
+            const round = FRUIT_ROUNDS[currentFruitRound];
+            return (round && FRUIT_LAYOUTS[round.id]) || MAIN_GAME_LAYOUT;
+        }
+        function applyMainGameLayout() {
+            activeFruitLayout().forEach(function (a) {
+                const el = document.getElementById(a.id);
+                if (!el) return;
+                if (a.x != null) el.style.left = a.x + '%';
+                if (a.y != null) el.style.top = a.y + '%';
+                if (a.w != null) el.style.width = a.w + '%';
+                if (a.h != null) el.style.height = a.h + '%';
+            });
+        }
+        function clearMainGameLayout() {
+            MAIN_GAME_LAYOUT.forEach(function (a) {
+                const el = document.getElementById(a.id);
+                if (!el) return;
+                el.style.removeProperty('left');  el.style.removeProperty('top');
+                el.style.removeProperty('width'); el.style.removeProperty('height');
+            });
+        }
+
         const csOverlay = document.getElementById('container-select');
         const csPanel   = document.getElementById('cs-panel');
         const csTall    = document.getElementById('cs-choice-tall');
         const csWide    = document.getElementById('cs-choice-wide');
         let csCanPick = false;
 
-        // Paint a fresh WATERMELON scene (full dispenser, both containers empty)
-        // behind the chooser, so picking flows straight into the fill with no
-        // visible swap. Mirrors startCapacityFlow's setup block (minus the first
-        // instruction — the chooser drives that).
-        function paintWatermelonScene() {
-            CAPACITY_PHASE = 'main';
+        // Set the body classes for a fruit round: .phase-watermelon is the GENERIC
+        // "fruit round" class every round shares (it drives the shared grounding,
+        // tap-point and layout logic), and the per-fruit modifier (.fruit-pineapple
+        // / .fruit-kiwi) layers the tint + container proportions on top. The first
+        // round (watermelon) has no modifier — its look comes from .phase-watermelon.
+        function applyFruitBodyClasses(round) {
             document.body.classList.add('phase-watermelon');
+            document.body.classList.remove('fruit-pineapple', 'fruit-kiwi');
+            if (round && round.fruitClass) document.body.classList.add(round.fruitClass);
+        }
+
+        // Paint a fresh scene for the given fruit round (full dispenser, both
+        // containers empty) behind the chooser, so picking flows straight into the
+        // fill with no visible swap. Mirrors startCapacityFlow's setup block (minus
+        // the first instruction — the chooser drives that).
+        function paintFruitScene(round) {
+            round = round || FRUIT_ROUNDS[currentFruitRound];
+            CAPACITY_PHASE = 'main';
+            applyFruitBodyClasses(round);
             resetCapacityState({ dispenserLevel: 'full' });
-            applyCapacityAssets(MAIN_GAME_ASSETS);
+            applyCapacityAssets(round.assets);
             setDispenserFull();
             tall.src = TALL_EMPTY_SRC;
             wide.src = WIDE_EMPTY_SRC;
             if (wideLiquid) wideLiquid.classList.remove('partial');
             resetGeniePose();
+            applyMainGameLayout();          // per-fruit resized containers
             gameState.busy = false;
             gameState.canInteract = false;
         }
+        // Back-compat alias (debug entry uses this name).
+        function paintWatermelonScene() { paintFruitScene(FRUIT_ROUNDS[currentFruitRound]); }
 
         function openContainerSelect() {
             mainSelectedContainer = null;
@@ -3442,6 +3644,9 @@
                 onPeak: () => {
                     clearCapacityFlowState();
                     CAPACITY_PHASE = 'done';
+                    // Drop the fruit-round skin so the completion screen (and the
+                    // next Play Again) start from a neutral state.
+                    document.body.classList.remove('phase-watermelon', 'fruit-pineapple', 'fruit-kiwi');
                     const txt = document.getElementById('capacity-complete-text');
                     if (txt) txt.innerHTML = 'You found which container<br>can hold more juice!';
                     const ov = document.getElementById('capacity-complete');
@@ -4561,7 +4766,7 @@
             pourAToB:         'assets/juice-pour.svg',
             pourBToAOverflow: 'assets/juice-pour-overflow.svg',
             gogo:    'assets/Gogo.webp',
-            winGogo:  'assets/win gogo.webp',
+            winGogo:  'assets/successGogo.gif',
             loseGogo: 'assets/loose gogo.webp',
             handHint: 'assets/image.webp',
             // Level-2 (wide) extras — watermelon equivalents.
@@ -4572,6 +4777,75 @@
             containerAFillMs: 2800,
             containerBFillMs: 2800
         };
+
+        // PINEAPPLE round (2nd fruit). Same engine/flow/layout as the watermelon
+        // round — only the art differs. Tall container art is 84×109 (same box as
+        // the watermelon tall), the wide is a 66×96 bottle. Like watermelon, the
+        // drain SVG plays ONCE and freezes (no longer a 10s loop), and a dedicated
+        // STATIC paused pose (pineapple_jar_paused.svg) is used to stop the drain
+        // at fill-end — so the dispenser never keeps "flowing" after the container
+        // returns. Fill freeze times match the SVG durations.
+        const PINEAPPLE_GAME_ASSETS = {
+            bg: 'assets/Background.webp',
+            table: 'assets/TAble.webp',
+            dispenserFull:   'assets/Pineapple jar.svg',
+            dispenserDrain:  'assets/pineapple_jar_flow.svg',
+            dispenserPaused: 'assets/pineapple_jar_paused.svg',
+            containerAEmpty:  'assets/for pinapple juice-1-1.svg',                              // tall 84×109
+            containerAFilled: 'assets/pineapple_juice_filling_animation_issue_fixed_full.svg',  // tall fill, 2.8s
+            containerBEmpty:  'assets/for pinapple juice-1.svg',                                // wide 66×96
+            containerBFilled: 'assets/pineapple-half-wide.svg',     // wide RESTING fill — a static ~50% pour, matching receiverFinalFrac 0.5. Was the *full* fill SVG, which made the wide jump to FULL on the screen after the pour.
+            pourAToB:         'assets/juice-pour.svg',
+            pourBToAOverflow: 'assets/juice-pour-overflow.svg',
+            gogo:    'assets/Gogo.webp',
+            winGogo:  'assets/successGogo.gif',
+            loseGogo: 'assets/loose gogo.webp',
+            handHint: 'assets/image.webp',
+            dispenserPausedLow: 'assets/pineapple_jar_paused.svg',
+            dispenserWideDrain: 'assets/pineapple_jar_flow.svg',
+            containerBFillAnim: 'assets/pineapple_juice_filling_animation_for_this_full.svg',    // wide fill, 2.6s
+            containerAFillMs: 2800,
+            containerBFillMs: 2600
+        };
+
+        // KIWI round (3rd fruit). Same engine; tall container art is 104×114, wide
+        // is 91×110. The tall fill SVG uses a CSS @keyframes fill (2.6s); the wide
+        // fill SVG uses SMIL (3.2s). kiwi_jar_static_flow.svg is the only dispenser
+        // pour art, so it serves as drain + paused.
+        const KIWI_GAME_ASSETS = {
+            bg: 'assets/Background.webp',
+            table: 'assets/TAble.webp',
+            dispenserFull:   'assets/Kiwi Jar.svg',
+            dispenserDrain:  'assets/kiwi_jar_static_flow.svg',
+            dispenserPaused: 'assets/kiwi_jar_paused.svg',   // STATIC drained pose. Was kiwi_jar_static_flow.svg (a looping SMIL drain), so freezeDispenserDrain() never stopped — the flow kept running after the container returned.
+            containerAEmpty:  'assets/for kiwi juice-1-1.svg',                          // tall 104×114
+            containerAFilled: 'assets/kiwi_juice_filling_animation_new_glass.svg',      // tall fill, CSS 2.6s
+            containerBEmpty:  'assets/for kiwi juice-1.svg',                            // wide 91×110
+            containerBFilled: 'assets/kiwi-half-wide.svg',       // wide RESTING fill — static ~50% pour (matches receiverFinalFrac 0.5). The _tip_full SVG rests FULL (its SMIL has begin=indefinite, so it shows the full base value), which made the wide jump to full after the pour.
+            pourAToB:         'assets/juice-pour.svg',
+            pourBToAOverflow: 'assets/juice-pour-overflow.svg',
+            gogo:    'assets/Gogo.webp',
+            winGogo:  'assets/successGogo.gif',
+            loseGogo: 'assets/loose gogo.webp',
+            handHint: 'assets/image.webp',
+            dispenserPausedLow: 'assets/kiwi_jar_paused.svg',   // static drained pose (see dispenserPaused)
+            dispenserWideDrain: 'assets/kiwi_jar_static_flow.svg',
+            containerBFillAnim: 'assets/kiwi_juice_filling_animation_tip_full.svg',      // wide fill, 3.2s
+            containerAFillMs: 2600,
+            containerBFillMs: 3200
+        };
+
+        // The post-tutorial rounds, played in order. Each runs the SAME single-
+        // container capacity flow (chooser → fill → pour → quiz). `fruitClass` is
+        // an extra body modifier layered on top of .phase-watermelon (the generic
+        // "fruit round" class) to re-skin tint + container proportions; the first
+        // round (watermelon) needs none. After the LAST round → completion screen.
+        const FRUIT_ROUNDS = [
+            { id: 'watermelon', assets: MAIN_GAME_ASSETS,      fruitClass: null },
+            { id: 'pineapple',  assets: PINEAPPLE_GAME_ASSETS, fruitClass: 'fruit-pineapple' },
+            { id: 'kiwi',       assets: KIWI_GAME_ASSETS,      fruitClass: 'fruit-kiwi' },
+        ];
+        let currentFruitRound = 0;
 
         // Which iteration is currently running ('tutorial' | 'main' | 'done').
         let CAPACITY_PHASE = 'tutorial';
@@ -4849,16 +5123,23 @@
 
         function getTapPoint() {
             const jr = juiceRect();
-
+            // The black tap SPOUT TIP, as a fraction of the rendered dispenser box.
+            // It differs per dispenser art: the orange (tutorial) jar's spout sits
+            // at 0.615 x / 0.82 y; the WATERMELON jar's spout is further right and a
+            // touch higher (0.646 x / 0.80 y) — measured from the rendered art. Using
+            // the orange value for watermelon dropped the stream LEFT of the spout
+            // (the jar centres under this point too, so both read as detached).
+            // Each fruit dispenser is different art, so the spout fraction is tuned
+            // per round (pineapple jar is wider → lip a touch further right; the
+            // kiwi jar is narrower → a touch left). Tunable via ?debug=1.
+            const b = document.body.classList;
+            let fx = 0.615, fy = 0.82;                                      // orange tutorial jar
+            if (b.contains('phase-watermelon')) { fx = 0.646; fy = 0.80; }  // watermelon (default fruit)
+            if (b.contains('fruit-pineapple'))  { fx = 0.662; fy = 0.818; } // pineapple — spout TIP at 0.818 y; x nudged right of the cone's geometric centre (0.650) to the actual front spout opening so the stream reads as coming straight out of the tap
+            if (b.contains('fruit-kiwi'))       { fx = 0.581; fy = 0.81; }  // kiwi — stream origin. fy tuned to the LIVE render (0.91 & 0.86 both left a gap below the spout); 0.81 sits at/just-into the cone exit so the stream reads as continuous from the tap.
             return {
-                // black tap / nozzle SPOUT TIP. Measured against the rendered
-                // dispenser: the spout opening sits at ~0.56 of the jar width.
-                // It was 0.625 — that lands on the faucet's RIGHT-side handle, so
-                // the pour stream (and the jar, which centres under this point)
-                // read as offset to the right and the nozzle looked detached from
-                // its own pour. 0.56 drops the stream straight out of the spout.
-                x: jr.left + jr.width * 0.615,
-                y: jr.top  + jr.height * 0.82
+                x: jr.left + jr.width  * fx,
+                y: jr.top  + jr.height * fy
             };
         }
 
@@ -5010,10 +5291,21 @@
         // The crossfade also softens the level-2 used→flow dissolve (no hard
         // snap), while keeping the dispenser flow ANIMATION fully intact.
         // drainSrc lets level 2 use a dedicated MID→LOW drain when one exists.
+        let _drainSeq = 0;
         async function startDispenserDrain(drainSrc) {
             clearDispenserDrain();
             gameState.tap = 'opening';
-            await crossfadeDispenserTo(drainSrc || JAR_DRAIN_SRC, { restartAnim: true });
+            const base = drainSrc || JAR_DRAIN_SRC;
+            // Cache-bust per fill so the animated drain's SMIL restarts from frame 0.
+            // Chromium keeps ONE SVGImage (and ONE SMIL timeline) per URL and shares
+            // it across every <img> + the startup warm-cache preload. That preload
+            // already ran the 4.2s drain to its end and froze it (fill="freeze"), so a
+            // non-busted URL paints the FROZEN END frame instantly — the level appears
+            // to snap straight to the used level instead of draining gradually. A
+            // unique URL = a brand-new timeline that plays from 0. crossfadeDispenserTo
+            // still AWAITs decode before revealing, so open-before-pour is unaffected.
+            const busted = base + (base.indexOf('?') === -1 ? '?' : '&') + 'd=' + (++_drainSeq);
+            await crossfadeDispenserTo(busted, { restartAnim: true });
             gameState.tap = 'open';
         }
         // Freeze the drain at the current moment by crossfading to the paused
@@ -5697,8 +5989,14 @@
         // settles on the front step so it reads as grounded under the nozzle.
         // -0.01 lifts it ~5% up from the earlier 4%-down spot (which sat too low /
         // clipped), so it rests just above the front step.
+        // groundFrac (optional): rest the jar's BASE on the lower front step,
+        // expressed as a fraction of the STAGE height. The table is full-width at
+        // the stage bottom, so this step line never moves when the dispenser does
+        // and never floats when the jar is resized — unlike the height-relative
+        // tapYOffset. tall = 0.976 matches where the wide jar grounds, so BOTH
+        // rest on the same lower shelf under the nozzle.
         const CONTAINER_ANCHORS = {
-            tall: { mouthX: 0.50, mouthY: 0.02, tapYOffset: 0.55 },
+            tall: { mouthX: 0.50, mouthY: 0.02, tapYOffset: 0.55, groundFrac: 0.976 },
             wide: { mouthX: 0.50, mouthY: 0.08, tapYOffset: 1.35, dropPct: -0.01 }
         };
 
@@ -5711,12 +6009,27 @@
                 const a   = CONTAINER_ANCHORS[type] || CONTAINER_ANCHORS.wide;
                 const wr  = wrapEl.getBoundingClientRect();
                 const tap = getTapPoint();
+                const sr  = stageRect();
 
-                const dx = tap.x - (wr.left + wr.width  * a.mouthX);
-                let   dy = (tap.y + wr.height * a.tapYOffset) - (wr.top + wr.height * a.mouthY);
-                // Optional extra drop (fraction of stage height) so the jar sits
-                // a touch lower on the front step.
-                if (a.dropPct) dy += stageRect().height * a.dropPct;
+                // Centre the jar's mouth under the tap spout.
+                const dx = tap.x - (wr.left + wr.width * a.mouthX);
+                let dy;
+                // groundFrac only applies in the watermelon main game (resized
+                // containers + moved dispenser); the tutorial keeps its proven
+                // tap-relative grounding untouched.
+                const useGround = a.groundFrac != null &&
+                                  document.body.classList.contains('phase-watermelon');
+                if (useGround) {
+                    // Rest the jar's BASE on the lower front step (a fixed fraction
+                    // of the stage height), so it stays grounded regardless of the
+                    // jar's size or the dispenser's position — no mid-air float.
+                    dy = (sr.top + sr.height * a.groundFrac) - wr.bottom;
+                } else {
+                    dy = (tap.y + wr.height * a.tapYOffset) - (wr.top + wr.height * a.mouthY);
+                    // Optional extra drop (fraction of stage height) so the jar sits
+                    // a touch lower on the front step.
+                    if (a.dropPct) dy += sr.height * a.dropPct;
+                }
 
                 const target = `translate(${dx}px, ${dy}px)`;
                 // Store the PURE translate so the success bounce / return can
@@ -6188,7 +6501,7 @@
             tallWrap.style.visibility = 'visible';
             wideWrap.style.visibility = 'visible';
             tall.src = TALL_EMPTY_SRC;              // assets/TAll container.svg
-            wide.src = WIDE_HALF_SRC + '?t=' + Date.now();   // assets/half-wide.svg
+            wide.src = WIDE_HALF_SRC;              // assets/half-wide.svg (no replay)
         }
 
         // =====================================================================
@@ -6206,7 +6519,15 @@
 
         // Live-tunable pour pose. Adjust via __juiceGame.pourTune({ tiltDeg: 48 }).
         const POUR_TUNE = {
-            tiltDeg: 52,       // peak tilt of the source jar (degrees)
+            tiltDeg: 100,      // peak tilt of the source jar (degrees). >90° so the
+                               // mouth tips past horizontal and faces DOWN over the
+                               // receiver — a real pour (at 52° the mouth still faced
+                               // up, so it read as leaning, not pouring). Safe because
+                               // the juice counter-rotates about the wrap's
+                               // center-bottom (rotCx/rotCy) → stays level + in-view,
+                               // and the spout placement (dx/dy) re-derives per frame.
+            tiltDegWatermelon: 100, // same steep, mouth-down pour for the watermelon
+                               // flow (ref: juice-pour-overflow.OLD.svg ~102°).
             liftAt: 0.22,      // fraction of duration when the pour pose is reached
             returnAt: 0.82,    // fraction of duration when the jar starts returning
             fallGapFrac: 0.30  // lip rests this fraction of the jar height above the mouth
@@ -6226,12 +6547,84 @@
         // openHalf/rimY: the jar OPENING half-width and top Y (viewBox units) — used
         // to anchor the pour on the real glass rim edge so the stream connects to
         // the spout (not the wrap's bounding-box corner).
+        // rotCx/rotCy = the wrap's center-bottom (its CSS transform-origin), so the
+        // juice counter-rotation cancels the tilt EXACTLY at any angle — required
+        // for the steeper, mouth-down pour to keep the juice level and in-view (the
+        // old cx/cy pivot drifted the juice out of the jar past ~70°).
         const JAR_GEO = {
-            tall: { vbW: 96, vbH: 258, cx: 47.5, cy: 120.5, fullY: 12, emptyY: 250, openHalf: 30, rimY: 4,
+            tall: { vbW: 96, vbH: 258, cx: 47.5, cy: 120.5, rotCx: 48, rotCy: 258, fullY: 12, emptyY: 250, openHalf: 30, rimY: 4,
                     clip: 'M15.3419 0.398438C14.9659 21.9851 -0.200144 28.7592 0.00200288 81.1798C0.0505181 93.8273 0.00503397 131.383 2.72694 196.991C3.97419 227.056 25.7919 241.671 47.5631 241.315C69.3343 241.671 91.152 227.056 92.4003 196.991C95.1222 131.383 95.0757 93.8273 95.1242 81.1798C95.3263 28.7592 80.1613 21.9851 79.7853 0.398438H51.7405H43.3877H15.3419Z' },
-            wide: { vbW: 178, vbH: 195, cx: 87.5, cy: 92.5, fullY: 30, emptyY: 190, openHalf: 46, rimY: 4,
+            wide: { vbW: 178, vbH: 195, cx: 87.5, cy: 92.5, rotCx: 89, rotCy: 195, fullY: 30, emptyY: 190, openHalf: 46, rimY: 4,
                     clip: 'M39.3029 0C39.3029 0 39.7617 6.72522 39.4172 8.10415C38.3975 12.1992 9.26585 26.3613 2.31704 40.6915C-2.95082 51.5535 2.31531 107.935 3.00258 121.04C3.68984 134.143 7.35467 161.042 24.9881 170.525C51.8883 184.991 125.42 184.991 152.321 170.525C169.954 161.042 173.619 134.143 174.306 121.04C174.993 107.936 180.259 51.5548 174.992 40.6915C168.043 26.3613 138.911 12.1992 137.891 8.10415C137.547 6.72522 138.006 0 138.006 0H39.3029Z' }
         };
+
+        // WATERMELON-flow container geometry — matches the REAL watermelon art
+        // (short tumbler "for watermelone juice-1-1.svg" 84×109, round jar
+        // "for watermelone juice-1.svg" 98×101). Without this the pour drew the
+        // tutorial cylinder/jar, so the containers "changed to the 1st-flow shape"
+        // mid-animation. The glass is the real empty art overlaid (art()), with the
+        // animated juice clipped to `clip` (the body silhouette) behind it.
+        // rotCx/rotCy = the wrap's center-bottom (its CSS transform-origin), so the
+        // juice counter-rotation cancels the tilt EXACTLY at any angle — no juice
+        // drift even at the steeper, more natural pour tilt.
+        const JAR_GEO_WM = {
+            tall: { vbW: 84, vbH: 109, cx: 42, cy: 55, rotCx: 42, rotCy: 109, fullY: 13, emptyY: 103, openHalf: 29, rimY: 1, art: () => (TALL_EMPTY_SRC || EMPTY_GLASS_SRC),
+                    clip: 'M13.6026 0.585938L13.4684 3.21127C13.4684 3.21127 8.02152 4.64262 6.40838 5.29915C4.79525 5.95568 0.558914 7.98402 0.021203 12.6377C-0.417619 16.4319 6.07377 70.3698 8.48508 90.1503C9.3901 97.5773 9.70705 101.426 18.781 105.171C28.4342 109.155 54.8642 109.155 64.5166 105.171C73.7239 101.372 73.9243 97.4387 74.8426 89.9035C77.2768 69.924 83.7126 16.4162 83.2755 12.6377C82.7378 7.98402 78.5015 5.95568 76.8883 5.29915C75.2743 4.64341 71.2737 3.21127 71.2737 3.21127L71.1395 0.585938C48.5547 0.585938 36.1874 0.585938 13.6026 0.585938Z' },
+            wide: { vbW: 98, vbH: 101, cx: 49, cy: 50, rotCx: 49, rotCy: 101, fullY: 9, emptyY: 90, openHalf: 27, rimY: 1, art: () => (WIDE_EMPTY_SRC),
+                    clip: 'M21.6971 0C21.6971 0 21.9503 3.71264 21.7601 4.47388C21.1973 6.73456 5.11519 14.5527 1.27912 22.4636C-1.62899 28.46 1.27816 59.585 1.65756 66.8196C2.03697 74.0535 4.06013 88.9027 13.7946 94.1378C28.6448 102.124 69.238 102.124 84.0882 94.1378C93.8227 88.9027 95.8458 74.0535 96.2252 66.8196C96.6046 59.5858 99.5118 28.4607 96.6037 22.4636C92.7676 14.5527 76.6855 6.73456 76.1227 4.47388C75.9325 3.71264 76.1857 0 76.1857 0H21.6971Z' }
+        };
+        // PINEAPPLE-flow container geometry. The pineapple TALL shares the EXACT
+        // 84×109 glass as watermelon (identical art silhouette), so it reuses the WM
+        // tall geometry. The pineapple WIDE is a narrower 66×96 bottle, so it needs
+        // its OWN viewBox + silhouette — without it the reuse-pour forced watermelon's
+        // 98×101 jar shape, so the pineapple art was drawn off-centre and the juice
+        // (clipped to the watermelon silhouette) spilled OUTSIDE the bottle. That read
+        // as "the container changed to the 2nd-flow (watermelon) container" mid-pour.
+        // clip = the real bottle body silhouette (the outer path of for pinapple
+        // juice-1.svg); art() draws this flow's empty bottle art behind the juice.
+        const JAR_GEO_PINEAPPLE = {
+            tall: JAR_GEO_WM.tall,
+            wide: { vbW: 66, vbH: 96, cx: 33, cy: 48, rotCx: 33, rotCy: 96, fullY: 16, emptyY: 86, openHalf: 22, rimY: 2, art: () => (WIDE_EMPTY_SRC),
+                    clip: 'M10.6382 0.515625C10.3771 6.24181 -0.138717 1.86782 0.00138758 15.7722C0.0356176 19.1281 0.0029805 61.9118 1.89041 79.3149C2.59889 85.8489 7.58693 89.2357 14.6924 92.5305C22.2517 96.0356 42.9506 96.0356 50.5098 92.5305C57.7204 89.1873 63.1431 85.7267 63.8619 79.0975C65.7684 61.5198 65.2606 19.1138 65.2009 15.7722C64.9652 2.66771 55.9412 5.89027 55.6969 0.515625C38.0103 0.515625 28.3248 0.515625 10.6382 0.515625Z' }
+        };
+        // KIWI-flow container geometry. Both kiwi containers differ from watermelon
+        // (tall 104×114, wide 91×110), so forcing JAR_GEO_WM (84×109 / 98×101) drew
+        // the kiwi art stretched into the wrong box and the juice — clipped to the
+        // watermelon silhouette — spilled OUTSIDE the glasses (the "totally broke"
+        // pour). Each gets its OWN viewBox + real body silhouette (the outer path of
+        // for kiwi juice-1-1.svg / for kiwi juice-1.svg); art() draws this flow's
+        // empty container behind the juice. Levels tuned to the silhouette.
+        const JAR_GEO_KIWI = {
+            tall: { vbW: 104, vbH: 114, cx: 52, cy: 57, rotCx: 52, rotCy: 114, fullY: 16, emptyY: 100, openHalf: 30, rimY: 2, art: () => (TALL_EMPTY_SRC || EMPTY_GLASS_SRC),
+                    clip: 'M20.572 0.886952V7.90256C20.572 7.90256 19.7062 11.95 17.4243 13.3886C-20.865 37.5267 13.5874 98.0733 29.4627 108.9C39.1987 115.539 64.1132 115.539 73.8503 108.9C89.7256 98.0733 124.178 37.5267 85.8887 13.3886C83.6068 11.95 82.741 7.90256 82.741 7.90256V0.886952C57.4603 -0.295651 45.8527 -0.295651 20.572 0.886952Z' },
+            wide: { vbW: 91, vbH: 110, cx: 45.5, cy: 55, rotCx: 45.5, rotCy: 110, fullY: 18, emptyY: 98, openHalf: 23, rimY: 2, art: () => (WIDE_EMPTY_SRC),
+                    clip: 'M22.576 4.22381C21.6928 10.1134 22.4901 14.7076 18.3187 18.7226C15.0079 21.9094 2.42969 25.7921 2.42969 38.6368C2.42969 51.4814 6.30196 87.11 7.93521 88.819C9.56846 90.5279 22.5599 101.243 26.6756 102.162C34.2107 103.845 40.6871 104.477 46.3841 104.475C51.849 104.471 57.6442 104.541 64.5319 102.162C68.5627 100.77 81.6382 90.5279 83.2714 88.819C84.9047 87.11 88.7769 51.4802 88.7769 38.6368C88.7769 25.7921 76.1987 21.9094 72.8879 18.7226C68.7165 14.7076 69.5138 10.1146 68.6306 4.22381L48.9948 2.51842L48.9835 1.92969L45.6028 2.22286L42.2212 1.92969L42.2099 2.51842L22.576 4.22381Z' }
+        };
+        // True during ANY fruit round (all carry .phase-watermelon for the shared
+        // engine). Used to pick the real-art jar geometry over the tutorial cylinders.
+        function isWatermelonPour() { return document.body.classList.contains('phase-watermelon'); }
+        // Per-flow jar geometry: the per-fruit modifier selects that fruit's own
+        // geometry. Pineapple and kiwi have distinct containers → dedicated tables;
+        // watermelon uses the WM geometry; the tutorial (no phase-watermelon) keeps
+        // the original tall-cylinder / wide-jar geometry.
+        function geoFor(kind) {
+            if (document.body.classList.contains('fruit-pineapple')) return JAR_GEO_PINEAPPLE[kind];
+            if (document.body.classList.contains('fruit-kiwi'))      return JAR_GEO_KIWI[kind];
+            return (isWatermelonPour() ? JAR_GEO_WM : JAR_GEO)[kind];
+        }
+        // Saturated juice colours for the REUSE-pour jar visual. The real glass art is
+        // drawn as a translucent grey frosting over the juice, which desaturates
+        // CSS-var fills (watermelon red washed out to pale pink — see makeJarVisual).
+        // Each fruit round supplies its OWN punchy stops so the poured juice reads
+        // true through the veil AND matches that round's static filled art (no colour
+        // pop at the hand-off). Default = watermelon red; pineapple = golden; kiwi =
+        // green. This is what made the pineapple pour render WATERMELON RED before.
+        function pourReuseJuiceStops() {
+            const b = document.body.classList;
+            if (b.contains('fruit-pineapple')) return ['#FFC400', '#FBB000', '#E08C00'];
+            if (b.contains('fruit-kiwi'))      return ['#A9DF2D', '#8BCB12', '#5E8C0A'];
+            return ['#FF2E0C', '#F01D00', '#B81400'];
+        }
         // Glass art (from the reference pour SVG) drawn in CORRECT z-order around
         // the juice: BACK (far glass + foot) → JUICE → FRONT (near-wall highlights,
         // rim). This is why a single flat container image couldn't work — its foot
@@ -6263,23 +6656,65 @@
         // during a pour. setLevel(frac, tiltDeg): frac 1=full, 0=empty; tiltDeg
         // counter-rotates the juice so its surface stays horizontal while tilted.
         function makeJarVisual(wrap, kind) {
-            const g = JAR_GEO[kind];
+            const g = geoFor(kind);
             const gid = 'rjl' + (++_rjlSeq);
-            const juiceGrad = '<linearGradient id="' + gid + 'j" x1="0" y1="0" x2="0" y2="1">' +
-                '<stop offset="0" stop-color="var(--tutorial-juice-light, #FEA400)"/>' +
-                '<stop offset="0.55" stop-color="var(--tutorial-juice-light, #FEA400)"/>' +
-                '<stop offset="1" stop-color="var(--tutorial-juice-dark, #CC8400)"/></linearGradient>';
+            // The real glass art overlay lays a ~50% grey veil over the juice, which
+            // desaturated CSS-var fills to pale pastels. So each fruit round supplies
+            // its OWN richer, punchier stops (pourReuseJuiceStops) that read true
+            // through the veil AND match that round's static filled art — no colour
+            // pop at the hand-off. The tutorial (no real-art overlay) keeps its themed
+            // CSS-var juice via the non-art branch below.
+            const _js = pourReuseJuiceStops();   // per-fruit punchy stops (golden / green / red)
+            const juiceGrad = g.art
+                ? '<linearGradient id="' + gid + 'j" x1="0" y1="0" x2="0" y2="1">' +
+                  '<stop offset="0" stop-color="' + _js[0] + '"/>' +
+                  '<stop offset="0.55" stop-color="' + _js[1] + '"/>' +
+                  '<stop offset="1" stop-color="' + _js[2] + '"/></linearGradient>'
+                : '<linearGradient id="' + gid + 'j" x1="0" y1="0" x2="0" y2="1">' +
+                  '<stop offset="0" stop-color="var(--tutorial-juice-light, #FEA400)"/>' +
+                  '<stop offset="0.55" stop-color="var(--tutorial-juice-light, #FEA400)"/>' +
+                  '<stop offset="1" stop-color="var(--tutorial-juice-dark, #CC8400)"/></linearGradient>';
             const glassGrad = '<linearGradient id="' + gid + 'gl" x1="0" y1="0" x2="1" y2="0">' +
                 '<stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/><stop offset="0.18" stop-color="#e9eef2" stop-opacity="0.28"/>' +
                 '<stop offset="0.5" stop-color="#cfd6da" stop-opacity="0.14"/><stop offset="0.82" stop-color="#e9eef2" stop-opacity="0.30"/>' +
                 '<stop offset="1" stop-color="#ffffff" stop-opacity="0.5"/></linearGradient>';
-            const back = (kind === 'wide')
-                ? '<path d="' + g.clip + '" fill="url(#' + gid + 'gl)"/>'
-                : '<path opacity="0.5" fill-rule="evenodd" d="' + TALL_FOOT + '" fill="#B2B1B2"/>' +
-                  '<path opacity="0.29" fill-rule="evenodd" d="' + g.clip + '" fill="#CBCBCB"/>';
-            const front = (kind === 'wide') ? WIDE_FRONT : TALL_FRONT;
+            let back, front;
+            if (g.art) {
+                // WATERMELON: use the real empty container art for the glass so the
+                // pour shows this flow's exact container (shape, rim, foot,
+                // highlights). The art is mostly a translucent GREY frosting, so
+                // drawing it OVER the juice washed the juice out to pale pink. Draw
+                // it BEHIND the juice instead: the opaque vibrant juice then reads
+                // true in the filled area, while the glass/rim still shows in the
+                // empty area above it. A faint copy ON TOP (low opacity) adds just a
+                // hint of glass reflection over the juice without dulling it.
+                const artUrl = encodeURI(g.art());
+                const artImg = (op) => '<image href="' + artUrl + '" x="0" y="0" width="' + g.vbW + '" height="' + g.vbH + '" preserveAspectRatio="xMidYMid meet" style="pointer-events:none"' + (op != null ? ' opacity="' + op + '"' : '') + '/>';
+                back = artImg();
+                // FRONT glass OVER the juice — like the tutorial (1st flow), where the
+                // juice sits BEHIND the near glass wall. Draw the real art on top, but
+                // only lightly (0.3): enough that the glass wall/rim/highlights read
+                // over the juice (so it's clearly "inside" the glass), while keeping
+                // the juice's deep watermelon red — the grey frosting at higher
+                // opacity washed it out to pale pink. A faint clear sheen adds glass.
+                front = artImg(0.3) +
+                        '<path d="' + g.clip + '" fill="url(#' + gid + 'gl)" opacity="0.16"/>';
+            } else {
+                back = (kind === 'wide')
+                    ? '<path d="' + g.clip + '" fill="url(#' + gid + 'gl)"/>'
+                    : '<path opacity="0.5" fill-rule="evenodd" d="' + TALL_FOOT + '" fill="#B2B1B2"/>' +
+                      '<path opacity="0.29" fill-rule="evenodd" d="' + g.clip + '" fill="#CBCBCB"/>';
+                front = (kind === 'wide') ? WIDE_FRONT : TALL_FRONT;
+            }
+            // The juice is a half-plane (everything BELOW the surface line at rect
+            // y) clipped to the body. It MUST be large enough to cover the whole
+            // body even when the jar is tilted near-horizontal (the body then spans
+            // ~vbH sideways) — otherwise the fill is clipped to a sub-strip and the
+            // juice reads as a vertical slab at one end instead of a flat pool. Size
+            // it to several times the jar's largest dimension so it always covers.
+            const big = (g.vbW + g.vbH) * 4;
             const juice = '<g clip-path="url(#' + gid + 'c)"><g class="rjlrot">' +
-                '<rect class="rjljuice" x="' + (-g.vbW) + '" y="' + g.emptyY + '" width="' + (g.vbW * 3) + '" height="' + (g.vbH * 3) + '" fill="url(#' + gid + 'j)"/></g></g>';
+                '<rect class="rjljuice" x="' + (-big) + '" y="' + g.emptyY + '" width="' + (big * 2) + '" height="' + (big * 2) + '" fill="url(#' + gid + 'j)"/></g></g>';
             const markup =
                 '<svg viewBox="0 0 ' + g.vbW + ' ' + g.vbH + '" preserveAspectRatio="xMidYMid meet" ' +
                 'style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:6;overflow:visible">' +
@@ -6291,11 +6726,32 @@
             wrap.appendChild(svg);
             const rect = svg.querySelector('.rjljuice');
             const rot = svg.querySelector('.rjlrot');
+            // Counter-rotate the juice about the wrap's center-bottom (rotCx/rotCy)
+            // when defined — exact tilt cancellation at any angle; fall back to the
+            // jar centre for the tutorial geometry (unchanged).
+            const pcx = (g.rotCx != null) ? g.rotCx : g.cx;
+            const pcy = (g.rotCy != null) ? g.rotCy : g.cy;
+            function applyTilt(tiltDeg) {
+                rot.setAttribute('transform', tiltDeg ? ('rotate(' + (-tiltDeg).toFixed(2) + ' ' + pcx + ' ' + pcy + ')') : '');
+            }
             return {
                 svg: svg,
+                geo: g,
+                // Upright fill: surface at the jar's own fill level. Used for the
+                // (non-tilted) RECEIVER, where the jar coords == world coords.
                 setLevel: function (frac, tiltDeg) {
                     rect.setAttribute('y', (g.emptyY + (g.fullY - g.emptyY) * frac).toFixed(1));
-                    rot.setAttribute('transform', tiltDeg ? ('rotate(' + (-tiltDeg).toFixed(2) + ' ' + g.cx + ' ' + g.cy + ')') : '');
+                    applyTilt(tiltDeg);
+                },
+                // World-space fill for the TILTED source: the caller passes the
+                // juice-surface Y already mapped into this SVG's rect-y (a
+                // world-horizontal line). With the counter-rotation, the juice then
+                // lies flat in world space and pools at the jar's LOW side (the
+                // spout) — so it reads as flowing out, not as a vertical slab in the
+                // jar's upright frame.
+                setSurface: function (svgY, tiltDeg) {
+                    rect.setAttribute('y', svgY.toFixed(1));
+                    applyTilt(tiltDeg);
                 },
                 remove: function () { svg.remove(); }
             };
@@ -6308,7 +6764,10 @@
             return new Promise(resolve => {
                 const { sourceWrap, receiverWrap, dir, durationMs } = cfg;
                 const T = POUR_TUNE;
-                const theta = dir * T.tiltDeg;
+                // Steeper, more natural tilt for the watermelon flow; tutorial keeps
+                // its proven 52°.
+                const tiltDeg = isWatermelonPour() ? (T.tiltDegWatermelon || T.tiltDeg) : T.tiltDeg;
+                const theta = dir * tiltDeg;
                 const recvFinal = (cfg.receiverFinalFrac != null) ? cfg.receiverFinalFrac : 1;
 
                 // Auto-calibrate the pour pose from the LIVE rects, so the lip lands
@@ -6321,7 +6780,7 @@
                 // wrap (esp. the round jar), so the bbox corner left the visible
                 // spout offset from the stream. Map the rim point from viewBox units
                 // into the live wrap rect.
-                const sGeo = JAR_GEO[cfg.sourceKind];
+                const sGeo = geoFor(cfg.sourceKind);
                 const lipRest = {
                     x: sRect.left + ((sGeo.cx + dir * sGeo.openHalf) / sGeo.vbW) * sRect.width,
                     y: sRect.top + (sGeo.rimY / sGeo.vbH) * sRect.height
@@ -6344,7 +6803,13 @@
                 const recvVisPrev = cfg.receiverImg.style.visibility;
                 cfg.sourceImg.style.visibility = 'hidden';
                 cfg.receiverImg.style.visibility = 'hidden';
-                if (cfg.receiverPrefillSrc) cfg.receiverImg.src = cfg.receiverPrefillSrc + '?t=' + Date.now();
+                // NO cache-bust: the receiver is empty before the pour, so setting
+                // the fill src genuinely changes it (loads + plays its fill anim once
+                // while hidden, freezing full by reveal). Using the STABLE src string
+                // here means later screens that set the SAME src are a no-op — so the
+                // jar never replays its fill animation on the explanation/quiz screens
+                // (the "it fills again even though it's already full" bug).
+                if (cfg.receiverPrefillSrc) cfg.receiverImg.src = cfg.receiverPrefillSrc;
                 const srcJuice = makeJarVisual(sourceWrap, cfg.sourceKind);
                 const recvJuice = makeJarVisual(receiverWrap, cfg.receiverKind);
                 srcJuice.setLevel(1, 0);      // source starts full
@@ -6358,7 +6823,7 @@
                 // length is updated each frame to reach the receiver's rising juice
                 // SURFACE, so it goes all the way to the bottom when the receiver is
                 // empty and shortens as it fills (instead of stopping half-way).
-                const recvGeo = JAR_GEO[cfg.receiverKind];
+                const recvGeo = geoFor(cfg.receiverKind);
                 const stageRect = stage.getBoundingClientRect();
                 const spoutY = mouth.y - fallGap;
                 const streamW = Math.max(6, Math.min(15, sRect.width * 0.10));
@@ -6395,14 +6860,31 @@
                         'translate(' + (dx * poseFrac).toFixed(1) + 'px,' + (dy * poseFrac).toFixed(1) + 'px) rotate(' + tilt.toFixed(2) + 'deg)';
                     // Levels: transfer juice across the pour window.
                     const pour = _smooth(T.liftAt, T.returnAt, p);
-                    srcJuice.setLevel(1 - pour, tilt);
+                    const srcFrac = 1 - pour;
+                    // SOURCE juice in WORLD space: keep the surface horizontal and
+                    // let the juice pool at the jar's LOW side (the spout) so it
+                    // visibly flows out — instead of sitting as a vertical slab in
+                    // the jar's upright frame. Map a world-horizontal surface (lerp
+                    // between the tilted jar's live top and bottom by the fill level)
+                    // back into the source SVG's rect-y. The counter-rotation then
+                    // levels it. (sRect = the un-rotated start box; srcDy = the
+                    // current pour translate — both undo the live transform so the
+                    // rect-y lands where we want on screen.)
+                    const liveBox = sourceWrap.getBoundingClientRect();
+                    const surfaceScreenY = liveBox.top + (1 - srcFrac) * liveBox.height;
+                    const srcDy = dy * poseFrac;
+                    const srcSurfaceSvgY = (surfaceScreenY - srcDy - sRect.top) / sRect.height * sGeo.vbH;
+                    srcJuice.setSurface(srcSurfaceSvgY, tilt);
                     recvJuice.setLevel(recvFinal * pour, 0);
                     // Stream reaches DOWN to the receiver's current juice surface
                     // (bottom when empty → shorter as it fills), not a fixed half.
                     stream.style.height = Math.max(10, recvSurfaceY(recvFinal * pour) - spoutY + 4) + 'px';
                     // Stream visible — and the pouring-juice sound plays — only while
-                    // juice is actually flowing (the hold between lift and return).
-                    const pouring = p > T.liftAt && p < T.returnAt;
+                    // juice is actually flowing AND the source still has juice left.
+                    // The source-level guard cuts the stream the instant the jar is
+                    // empty, so it never keeps pouring from an empty container.
+                    const srcLevel = 1 - pour;
+                    const pouring = p > T.liftAt && p < T.returnAt && srcLevel > 0.02;
                     stream.style.opacity = pouring ? '0.95' : '0';
                     if (pouring && !pourSndOn) { pourSndOn = true; startPourSound(); }
                     else if (!pouring && pourSndOn) { pourSndOn = false; stopPourSound(); }
@@ -6440,10 +6922,14 @@
                     sourceEmptySrc: (TALL_EMPTY_SRC || EMPTY_GLASS_SRC),
                     receiverWrap: wideWrap, receiverImg: wide, receiverKind: 'wide',
                     receiverEmptySrc: WIDE_EMPTY_SRC, receiverFinalFrac: 0.5,
+                    // Prefill the wide jar's final fill behind the hidden img so it is
+                    // ALREADY full (animation done + frozen) when revealed — no re-fill
+                    // flash at the hand-off, and it stays put on the next screens.
+                    receiverPrefillSrc: WIDE_HALF_SRC,
                     dir: +1, durationMs: HTML_POUR_MS,
                     onEnd: () => {
                         tall.src = TALL_EMPTY_SRC || EMPTY_GLASS_SRC;
-                        wide.src = WIDE_HALF_SRC + '?t=' + Date.now();
+                        wide.src = WIDE_HALF_SRC;   // same as prefill → no reload/replay
                     }
                 });
             }
@@ -6605,6 +7091,26 @@
         let overflowFxNodes = [];
         function showOverflowSpill() {
             hideOverflowSpill();        // clean slate — never stack two systems
+            // Re-assert this round's body skin (helps the transient pour-arc overlay,
+            // which is class-driven). No-op when already set.
+            if (CAPACITY_PHASE === 'main' && typeof applyFruitBodyClasses === 'function') {
+                applyFruitBodyClasses(FRUIT_ROUNDS[currentFruitRound] || FRUIT_ROUNDS[0]);
+            }
+            // Colour the overflow art to THIS round's juice with an INLINE filter, so
+            // it never depends on the body fruit-class being present at render time
+            // (the class was getting dropped between the fill and the overflow, which
+            // left every spill ORANGE). overflow-splash.svg / overflow-puddle-*.svg
+            // fill with #EA8E00 (hue ~36°) via a CSS var that can't penetrate an <img>,
+            // so the only recolour path is a filter on the element. Rotate the base
+            // hue onto each juice's hue: pineapple 48°, kiwi 81°, watermelon ~14°.
+            // Tutorial (orange) keeps the art's native colour (no filter).
+            let ovFilter = '';
+            if (CAPACITY_PHASE === 'main') {
+                const fid = (FRUIT_ROUNDS[currentFruitRound] || {}).id;
+                if (fid === 'pineapple')  ovFilter = 'hue-rotate(12deg) saturate(1.35) brightness(1.06) drop-shadow(0 1px 4px rgba(190,140,0,0.3))';
+                else if (fid === 'kiwi')  ovFilter = 'hue-rotate(45deg) saturate(1.5) brightness(1.0) drop-shadow(0 1px 4px rgba(60,120,0,0.3))';
+                else                      ovFilter = 'hue-rotate(-22deg) saturate(1.4) brightness(0.95) drop-shadow(0 1px 4px rgba(150,30,0,0.3))';
+            }
             const sr = stage.getBoundingClientRect();
             const r  = tallWrap.getBoundingClientRect();
             if (!sr.width || !r.width) return;
@@ -6615,6 +7121,7 @@
                 const el = document.createElement('img');
                 el.className = cls; el.src = src; el.alt = '';
                 Object.assign(el.style, css);
+                if (ovFilter) el.style.filter = ovFilter;   // overrides the class-based CSS filter
                 return add(el);
             };
 
@@ -7181,7 +7688,14 @@
                 // glass, so level 2 must NOT look refilled — it continues from the
                 // mid level and drains further as the wide jar fills.
                 wide.src  = WIDE_EMPTY_SRC;
-                setDispenserUsed();   // paused/mid pose (juice top y=258) + clear drain mask
+                // If the dispenser is still FULL this is a first/standalone fill (e.g.
+                // a fruit round where WIDE was picked first), so it must drain
+                // GRADUALLY full→mid below — hold the FULL pose now instead of snapping
+                // to the mid 'used' pose. Only a level-2 continuation (tutorial, where
+                // level 1 already used the dispenser) starts from the mid pose.
+                const wideStartedFull = !!(gameState.dispenser && gameState.dispenser.level === 'full');
+                if (wideStartedFull) setDispenserFull();
+                else setDispenserUsed();   // paused/mid pose (juice top y=258) + clear drain mask
                 await wait(60);
 
                 // 1) Glide the wide jar to the SAME front/lower-step spot under the
@@ -7202,7 +7716,13 @@
                 //    nozzle is open) and let the pour stream convey the flow. Either
                 //    way the dispenser never refills.
                 const hasDedicatedLowDrain = JAR_WIDE_DRAIN_SRC && JAR_WIDE_DRAIN_SRC !== JAR_DRAIN_SRC;
-                if (hasDedicatedLowDrain) {
+                if (wideStartedFull) {
+                    // First fill from a FULL dispenser → gradual full→mid drain, same
+                    // as the tall fill. startDispenserDrain cache-busts so the SMIL
+                    // restarts from frame 0 and the level animates down smoothly
+                    // (instead of the instant snap the mid 'used' pose gave before).
+                    await startDispenserDrain();
+                } else if (hasDedicatedLowDrain) {
                     await startDispenserDrain(JAR_WIDE_DRAIN_SRC);   // animates mid→low, no snap
                 } else {
                     gameState.tap = 'open';                          // used/open pose held; no snap-to-full
@@ -7238,7 +7758,11 @@
                 // LOW pose; otherwise the dispenser already shows the used/open pose
                 // (we never snapped it up), so we just mark the tap closed — no
                 // needless same-pose crossfade flicker.
-                if (hasDedicatedLowDrain) {
+                if (hasDedicatedLowDrain || wideStartedFull) {
+                    // wideStartedFull: we played the full→mid drain above, so freeze it
+                    // to the static drained pose. Essential for kiwi, whose flow SVG
+                    // LOOPS (repeatCount=indefinite) and would otherwise keep running
+                    // after the fill; the crossfade also settles watermelon/pineapple.
                     freezeDispenserDrain(JAR_PAUSED_LOW_SRC);
                 } else {
                     gameState.tap = 'closed';
@@ -7402,6 +7926,16 @@
             currentStep = STEPS.QUIZ;
             currentState = GAME_STATES.TUTORIAL_QUIZ;
             gameState.canInteract = false;
+
+            // Show the SAME containers this flow actually uses (the active empty
+            // art set by applyCapacityAssets), so the quiz matches each fruit round
+            // — watermelon / pineapple / kiwi each show their own jars, and the
+            // tutorial keeps its generic glasses (TALL/WIDE_EMPTY_SRC default to
+            // 'TAll container.svg' / 'Wide Container.svg').
+            const tallImg = leftChoice.querySelector('img');
+            const wideImg = rightChoice.querySelector('img');
+            if (tallImg && TALL_EMPTY_SRC) tallImg.src = TALL_EMPTY_SRC;
+            if (wideImg && WIDE_EMPTY_SRC) wideImg.src = WIDE_EMPTY_SRC;
 
             // Reset any prior state classes so re-entry plays clean.
             [leftChoice, rightChoice].forEach(el => {
@@ -7623,7 +8157,10 @@
             //   wide = half-wide.svg. The dispenser must NOT look refilled here.
             setDispenserUsed();                              // paused/used pose + clear drain mask
             tall.src  = TALL_EMPTY_SRC;                       // assets/TAll container.svg
-            wide.src  = WIDE_HALF_SRC + '?t=' + Date.now();   // assets/half-wide.svg
+            // NO cache-bust: the wide jar is already showing this filled art from the
+            // pour (frozen full), so re-setting the SAME src is a no-op and the fill
+            // animation does NOT replay here (it's already full — must not refill).
+            wide.src  = WIDE_HALF_SRC;                        // assets/half-wide.svg
             document.body.classList.remove('scene-playing');  // make sure containers show
             if (tallDrainMask) tallDrainMask.classList.remove('active');
 
@@ -7798,7 +8335,7 @@
         (function preloadGameAssets() {
             // TODO(asset): no dedicated watermelon jar / glass SVGs exist in
             // ASSETS — glasses are CSS-drawn and the win art is reused.
-            ['assets/win gogo.webp'].forEach(src => { const p = new Image(); p.src = src; });
+            ['assets/successGogo.gif'].forEach(src => { const p = new Image(); p.src = src; });
         })();
 
         // ---------- Reusable overlay-guide helpers ----------
@@ -9423,7 +9960,23 @@
             clearCapacityFlowState,
             applyCapacityAssets,
             MAIN_GAME_ASSETS,
+            PINEAPPLE_GAME_ASSETS,
+            KIWI_GAME_ASSETS,
+            FRUIT_ROUNDS,
             TUTORIAL_ASSETS,
+            // QA: jump straight to a fruit round's chooser by index or id, e.g.
+            // __juiceGame.startFruitRound('kiwi') or .startFruitRound(1).
+            startFruitRound: (which) => {
+                let idx = (typeof which === 'number')
+                    ? which
+                    : FRUIT_ROUNDS.findIndex(r => r.id === which);
+                if (idx < 0 || idx >= FRUIT_ROUNDS.length) idx = 0;
+                currentFruitRound = idx;
+                paintFruitScene(FRUIT_ROUNDS[idx]);
+                openContainerSelect();
+                return FRUIT_ROUNDS[idx].id;
+            },
+            getCurrentFruitRound: () => (FRUIT_ROUNDS[currentFruitRound] || {}).id,
             getCapacityPhase: () => CAPACITY_PHASE,
             getCurrentRound,
             GAME_STATES,
@@ -9510,24 +10063,24 @@
     <!-- Per-screen layout debug overlay. Additive only: loads ONLY when the URL
          carries ?debug=1, so the shipped game is untouched. See debug.js. -->
     <script>
-      var dbgQS = window.location.search;
-      if (dbgQS.indexOf("debug=1") !== -1) {
-        var dbgScript = document.createElement("script");
-        dbgScript.src = "debug.js";
-        document.body.appendChild(dbgScript);
-      }
+    //   var dbgQS = window.location.search;
+    //   if (dbgQS.indexOf("debug=1") !== -1) {
+    //     var dbgScript = document.createElement("script");
+    //     dbgScript.src = "debug.js";
+    //     document.body.appendChild(dbgScript);
+    //   }
       // Screen-jumper overlay. Loads on ?debug=1 / ?screens, AND automatically in
       // LOCAL dev (file:// or localhost) so it's always there while building — but
       // NEVER on a real deployed (https) host, so players never see it. Add
       // ?noscreens to force it off locally.
-      var dbgLocal = (window.location.protocol === "file:" ||
-                      /^(localhost|127\.0\.0\.1|0\.0\.0\.0|\[::1\])$/.test(window.location.hostname));
-      if (dbgQS.indexOf("noscreens") === -1 &&
-          (dbgQS.indexOf("debug=1") !== -1 || dbgQS.indexOf("screens") !== -1 || dbgLocal)) {
-        var scrScript = document.createElement("script");
-        scrScript.src = "debugScreens.js";
-        document.body.appendChild(scrScript);
-      }
+    //   var dbgLocal = (window.location.protocol === "file:" ||
+    //                   /^(localhost|127\.0\.0\.1|0\.0\.0\.0|\[::1\])$/.test(window.location.hostname));
+    //   if (dbgQS.indexOf("noscreens") === -1 &&
+    //       (dbgQS.indexOf("debug=1") !== -1 || dbgQS.indexOf("screens") !== -1 || dbgLocal)) {
+    //     var scrScript = document.createElement("script");
+    //     scrScript.src = "debugScreens.js";
+    //     document.body.appendChild(scrScript);
+    //   }
 </script>
 </body>
 </html>

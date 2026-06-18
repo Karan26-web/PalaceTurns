@@ -15,12 +15,9 @@
 <g id="kiwi-juice-fill-true-full" clip-path="url(#kiwiInnerLiquidClip)">
   <!-- Static FULL state: this asset is the "filled glass" shown AFTER the
        new_glass fill animation completes, so the liquid starts full and the
-       optional top-off animation only runs if triggered (begin="0s").
+       optional top-off animation only runs if triggered (begin="indefinite").
        The liquid overfills above the rim; the clip path trims it to the tip. -->
-  <rect x="-4" y="-8" width="99" height="124" fill="url(#kiwiJuiceGradientFixed)" opacity="0.98">
-    <animate attributeName="y" from="112" to="-8" dur="3.2s" begin="0s" fill="freeze" calcMode="spline" keySplines="0.42 0 0.2 1"/>
-    <animate attributeName="height" from="0" to="124" dur="3.2s" begin="0s" fill="freeze" calcMode="spline" keySplines="0.42 0 0.2 1"/>
-  </rect>
+  <rect x="-4" y="58" width="99" height="60" fill="url(#kiwiJuiceGradientFixed)" opacity="0.98"/><rect x="-4" y="58" width="99" height="2.4" fill="#D6F06A" opacity="0.6"/>
 </g>
 
 <path opacity="0.5" fill-rule="evenodd" clip-rule="evenodd" d="M19.4819 15.2031C19.4819 15.2031 15.4049 17.5163 12.7243 19.8057C10.0437 22.0962 2.8795 29.0596 2.40207 30.361C-1.77589 41.7517 86.165 45.694 88.6389 31.7947C89.2201 28.5293 86.3565 27.1885 84.5223 25.2806C81.0765 21.6946 76.0871 18.9452 71.6384 16.1243C71.6384 16.1243 40.0622 20.9605 19.4819 15.2031Z" fill="#F0EFEE"/>

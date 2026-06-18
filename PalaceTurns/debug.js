@@ -138,6 +138,11 @@
       .dbg-s {left:50%;bottom:-5px;margin-left:-5px;cursor:ns-resize}
       .dbg-sw{left:-5px;bottom:-5px;cursor:nesw-resize}
       .dbg-w {left:-5px;top:50%;margin-top:-5px;cursor:ew-resize}
+      .dbg-handle.dbg-selected { border-color:#ffd27f; border-style:solid;
+        background:rgba(255,210,127,0.12); box-shadow:0 0 0 1px #ffd27f; }
+      .dbg-ta { width:100%; box-sizing:border-box; height:64px; resize:vertical;
+        font:10px/1.35 monospace; background:#04222b; color:#bdeeff;
+        border:1px solid #0a5366; border-radius:5px; padding:5px; margin-bottom:6px; }
 
       .dbg-panel {
         position:fixed; top:10px; right:10px; width:300px; max-height:92vh;
@@ -146,7 +151,13 @@
         box-shadow:0 6px 24px rgba(0,0,0,0.5); border:1px solid #00485a;
       }
       .dbg-panel h4 { margin:0; padding:8px 10px; font-size:12px;
-        background:#00303d; border-radius:8px 8px 0 0; letter-spacing:.3px; }
+        background:#00303d; border-radius:8px 8px 0 0; letter-spacing:.3px;
+        cursor:pointer; display:flex; align-items:center; justify-content:space-between;
+        user-select:none; position:sticky; top:0; z-index:1; }
+      #dbg-collapse { font-size:11px; opacity:.85; margin-left:8px; }
+      /* Collapsed: shrink to just the header bar so it's out of the way. */
+      .dbg-panel.dbg-collapsed { width:auto; max-height:none; overflow:visible; }
+      .dbg-panel.dbg-collapsed > *:not(h4) { display:none; }
       .dbg-sec { padding:8px 10px; border-top:1px solid #062b36; }
       .dbg-sec b { color:#7fe9ff; font-weight:600; display:block; margin-bottom:5px; }
       .dbg-state { color:#ffd27f; font-family:monospace; word-break:break-all; }
@@ -257,6 +268,7 @@
     }
     refreshAll();
     renderList();
+    assignHandleZ();
   }
 
   function registerItem(el) {
@@ -355,12 +367,51 @@
 
   function refreshAll() { items.forEach(refreshItem); }
 
+  // Stack the handles so the element you most likely want to grab wins the
+  // pointer. Two handles can occupy the SAME rect (e.g. the inner #tall image
+  // exactly covers its #tall-wrap container, #dialogue covers #speech-wrap) —
+  // before this, the later-registered inner image sat on top and stole every
+  // click, so you could resize it but never MOVE the container underneath. Rule:
+  //   • bigger boxes sit UNDER smaller ones (so a small part inside a big group,
+  //     e.g. #genie inside #guide-wrap, stays grabbable), and
+  //   • when two boxes are the same size, the CONTAINER (ancestor) sits on top,
+  //     so dragging a jar moves the wrap, not the inner image.
+  // Anything still occluded can be raised on demand by clicking its panel row.
+  function assignHandleZ() {
+    const ranked = items.slice().sort(function (a, b) {
+      const ar = a.el.getBoundingClientRect(), br = b.el.getBoundingClientRect();
+      const aArea = ar.width * ar.height, bArea = br.width * br.height;
+      if (Math.abs(aArea - bArea) > 16) return bArea - aArea;  // bigger → lower z
+      if (a.el.contains(b.el)) return 1;                       // tie: ancestor on top
+      if (b.el.contains(a.el)) return -1;
+      return 0;
+    });
+    ranked.forEach(function (it, i) {
+      it.baseZ = 20 + i;
+      it.handle.style.zIndex = String(it.baseZ);
+    });
+  }
+
+  // Raise one item's handle above all others (and mark it) so even a fully
+  // occluded element — e.g. the inner #tall image under #tall-wrap — can be
+  // grabbed on demand by clicking its row in the panel list.
+  function selectItem(it) {
+    items.forEach(function (o) {
+      o.handle.style.zIndex = String(o.baseZ || 20);
+      o.handle.classList.remove("dbg-selected");
+    });
+    it.handle.style.zIndex = "100000";
+    it.handle.classList.add("dbg-selected");
+  }
+
   // --- drag -------------------------------------------------------------------
   function startDrag(e, it) {
     if (e.target.classList.contains("dbg-resizer")) return;  // resizer wins
     e.preventDefault();
     e.stopPropagation();
     active = it;
+    selectItem(it);                              // keep the grabbed item on top
+    try { it.handle.setPointerCapture(e.pointerId); } catch (_) {}
     // Convert pointer motion into % of the element's OWN base (offset parent), so
     // nested assets move WYSIWYG instead of jumping by the wrong coordinate scale.
     const br = baseRect(it.el);
@@ -392,6 +443,8 @@
     e.preventDefault();
     e.stopPropagation();
     active = it;
+    selectItem(it);
+    try { it.handle.setPointerCapture(e.pointerId); } catch (_) {}
     const br = baseRect(it.el);
     const start = boxInBase(it.el);
     const ox = e.clientX, oy = e.clientY;
@@ -441,7 +494,7 @@
     const levels = window.__juiceGame.LEVELS || {};
 
     panel.innerHTML =
-      '<h4>🛠 Layout Debug — ?debug=1</h4>' +
+      '<h4 id="dbg-head" title="click to collapse / expand">🛠 Layout Debug <span id="dbg-collapse">▾</span></h4>' +
       '<div class="dbg-sec"><b>Current screen</b>' +
         '<div class="dbg-state" id="dbg-current">—</div></div>' +
       '<div class="dbg-sec"><b>Jump to level</b>' +
@@ -459,9 +512,19 @@
         '<button class="dbg-btn" id="dbg-resetall" style="width:48%">Reset all</button>' +
         '<div style="height:6px"></div>' +
         '<button class="dbg-btn primary" id="dbg-download">⬇ Download Layout JSON</button>' +
-      '</div>';
+      '</div>' +
+      '<div class="dbg-sec"><b>Apply layout JSON</b>' +
+        '<textarea class="dbg-ta" id="dbg-apply-ta" placeholder="paste a layout JSON (same shape as the download) and Apply — sets each asset\'s left/top/width/height on the current screen"></textarea>' +
+        '<button class="dbg-btn primary" id="dbg-apply">▶ Apply to current screen</button></div>';
     document.body.appendChild(panel);
     listBody = panel.querySelector("#dbg-list");
+
+    // Header click collapses/expands the panel so it can be tucked away when you
+    // need to see the screen behind it.
+    panel.querySelector("#dbg-head").onclick = function () {
+      const collapsed = panel.classList.toggle("dbg-collapsed");
+      panel.querySelector("#dbg-collapse").textContent = collapsed ? "▸" : "▾";
+    };
 
     // Level chips → startLevel(id). Re-scan after the new screen renders.
     const levelWrap = panel.querySelector("#dbg-levels");
@@ -513,6 +576,9 @@
     panel.querySelector("#dbg-rescan").onclick = function () { scan(); syncCurrent(); };
     panel.querySelector("#dbg-resetall").onclick = resetAll;
     panel.querySelector("#dbg-download").onclick = downloadJSON;
+    panel.querySelector("#dbg-apply").onclick = function () {
+      applyLayoutJSON(panel.querySelector("#dbg-apply-ta").value);
+    };
 
     syncCurrent();
   }
@@ -529,7 +595,28 @@
   // screen (and any boot-time intro card) is never hidden — it covers the
   // stage and makes every jump look like a no-op. Force-hide those gates the
   // same way the game's Start handler does, so a jumped-to screen is visible.
+  // Full-screen overlay containers that, if left showing from a previous jump,
+  // cover the next screen — which is the "I click into a screen and then can't
+  // get into another one" bug. Every arbitrary debug jump force-hides them all.
+  const OVERLAY_IDS = [
+    "level-curtain", "quiz-overlay", "container-select", "tutorial-celebrate",
+    "capacity-complete", "game-overlay", "go-complete", "figma-stage",
+    "fs-quiz", "fs-complete", "mg-stage", "mg-quiz", "mg-celebrate"
+  ];
+
   function dismissBlockers() {
+    const G = window.__juiceGame || {};
+    // Use the game's own resets first (loading gate, intro, particles, quiz,
+    // guide, overflow, scene classes), then hard-hide every overlay container so
+    // none of them lingers on top of the screen we're about to jump to.
+    try { G.navResetForJump && G.navResetForJump(); } catch (e) { warn(e); }
+    try { G.clearCapacityFlowState && G.clearCapacityFlowState(); } catch (e) { warn(e); }
+    OVERLAY_IDS.forEach(function (id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.classList.remove("show", "active", "closing");   // restores CSS-hidden state
+      el.setAttribute("aria-hidden", "true");
+    });
     const loading = document.getElementById("loading-screen");
     if (loading) {
       loading.classList.add("hide");
@@ -538,7 +625,7 @@
     }
     // The pre-LBD intro card hides the genie via this body class; clear it so
     // gameplay screens render their normal pose.
-    document.body.classList.remove("pre-lbd-intro");
+    document.body.classList.remove("pre-lbd-intro", "fx-busy", "scene-playing");
   }
 
   // Force-show the pre-LBD intro overlay + genie STATICALLY (no timed typing /
@@ -600,7 +687,7 @@
         '<span class="id" title="flash element">' + it.id + '</span>' +
         '<code>' + fmt(b.x) + "," + fmt(b.y) + " · " + fmt(b.w) + "×" + fmt(b.h) + '</code>' +
         '<button class="dbg-btn dbg-mini">reset</button>';
-      row.querySelector(".id").onclick = function () { flash(it); };
+      row.querySelector(".id").onclick = function () { selectItem(it); flash(it); };
       row.querySelector("button").onclick = function () { resetItem(it); };
       listBody.appendChild(row);
     });
@@ -658,6 +745,36 @@
     log("downloaded layout for " + screen);
   }
 
+  // --- import / apply ---------------------------------------------------------
+  // Round-trip the exported JSON: paste a layout (array of {id,base?,x,y,w,h} or
+  // a full {assets:[...]} doc) and write each asset's left/top/width/height onto
+  // the live element. Applies on whatever screen is currently showing, so the
+  // same JSON can be dropped onto the tutorial OR the watermelon screen (they
+  // share the same elements). Re-scans afterward so the handles follow.
+  function applyLayoutJSON(text) {
+    if (!text || !text.trim()) { warn("paste a layout JSON first"); return; }
+    let data;
+    try { data = JSON.parse(text); }
+    catch (e) { warn("invalid JSON: " + e.message); return; }
+    const list = Array.isArray(data) ? data : (data && data.assets) || [];
+    if (!list.length) { warn("no assets in JSON"); return; }
+    let applied = 0, missing = [];
+    list.forEach(function (a) {
+      if (!a || !a.id) return;
+      const el = document.getElementById(a.id);
+      if (!el) { missing.push(a.id); return; }
+      stripTranslate(el);
+      if (a.x != null) el.style.left = a.x + "%";
+      if (a.y != null) el.style.top = a.y + "%";
+      if (a.w != null) el.style.width = a.w + "%";
+      if (a.h != null) el.style.height = a.h + "%";
+      applied++;
+    });
+    scan(); syncCurrent();
+    log("applied layout to " + applied + " assets"
+      + (missing.length ? " (not on this screen: " + missing.join(", ") + ")" : ""));
+  }
+
   // Timestamp without Date math dependencies in the hot path — readable suffix.
   function stamp() {
     const d = new Date();
@@ -671,8 +788,14 @@
     // Keep handles aligned when the responsive stage resizes.
     window.addEventListener("resize", function () { refreshAll(); });
     // Poll the live state so the navigator highlights the right chip even when
-    // the game advances on its own.
-    window.setInterval(syncCurrent, 800);
+    // the game advances on its own, and keep the handles glued to their elements
+    // (they drift after an external screen jump / animation otherwise — which
+    // read as the editor "not following" the screen). Skip while dragging so a
+    // live edit isn't fought by the poll.
+    window.setInterval(function () {
+      syncCurrent();
+      if (!active) refreshAll();
+    }, 500);
   }
 
   // --- tiny logging -----------------------------------------------------------

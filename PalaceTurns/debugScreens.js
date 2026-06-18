@@ -45,12 +45,19 @@
                  go: function () { reset(); if (G.startCapacityFlow) G.startCapacityFlow({ assets: G.MAIN_GAME_ASSETS, phase: "main" }); else if (G.startMainGame) G.startMainGame(); } });
     steps.push({ label: "Select", title: "Select one container (chooser)", group: "more",
                  go: function () { reset(); if (G.showContainerSelect) G.showContainerSelect(); } });
-    // NOTE: the old per-juice "Lvl watermelon/kiwi/pineapple" jumps drove the
-    // legacy mgStage engine (top%-anchored containers that float off the table).
-    // The live game runs entirely through the capacity engine (Tutorial → Select
-    // → watermelon), which is bottom-anchored on the table like the tutorial, so
-    // those debug jumps are intentionally NOT listed — they only led to the dead,
-    // mis-aligned parallel engine.
+    // Per-fruit jumps. These drive the LIVE capacity engine via startFruitRound()
+    // (sets currentFruitRound + CAPACITY_PHASE='main', paints the scene with the
+    // round's assets + body classes, then opens the chooser) — i.e. the exact
+    // entry the game uses when advancing between rounds. The OLD per-juice jumps
+    // used the dead mgStage engine and were removed; these replace them properly.
+    var FRUITS = G.FRUIT_ROUNDS || [];
+    var FRUIT_LABELS = { watermelon: "🍉 Watermelon", pineapple: "🍍 Pineapple", kiwi: "🥝 Kiwi" };
+    FRUITS.forEach(function (round) {
+      var id = round && round.id;
+      if (!id) return;
+      steps.push({ label: FRUIT_LABELS[id] || id, title: id + " round (chooser → fill → pour → quiz)", group: "more",
+                   go: function () { reset(); if (G.startFruitRound) G.startFruitRound(id); } });
+    });
 
     var cur = -1;
 
