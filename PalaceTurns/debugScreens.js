@@ -43,6 +43,8 @@
                  go: function () { reset(); if (G.startCapacityFlow) G.startCapacityFlow({ assets: G.TUTORIAL_ASSETS, phase: "tutorial" }); } });
     steps.push({ label: "Main game", title: "Main game iteration", group: "more",
                  go: function () { reset(); if (G.startCapacityFlow) G.startCapacityFlow({ assets: G.MAIN_GAME_ASSETS, phase: "main" }); else if (G.startMainGame) G.startMainGame(); } });
+    steps.push({ label: "Select", title: "Select one container (chooser)", group: "more",
+                 go: function () { reset(); if (G.showContainerSelect) G.showContainerSelect(); } });
     var levels = G.LEVELS || {};
     Object.keys(levels).forEach(function (id) {
       steps.push({ label: "Lvl " + id, title: "Level " + id, group: "more",
